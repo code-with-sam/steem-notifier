@@ -1,4 +1,4 @@
-const {app, Menu, Tray, BrowserWindow, Screen } = require('electron')
+const {app, Menu, Tray, BrowserWindow, Screen, ipcMain } = require('electron')
 
 const path = require('path')
 const url = require('url')
@@ -11,6 +11,7 @@ const open = require("open");
 let username;
 
 ipcMain.on('new-username', (event, data) => {
+  console.log('username set', data)
   username = data
 })
 
@@ -65,13 +66,31 @@ app.on('window-all-closed', function () {
 var streamComments = steem.api.streamTransactions('head', function(err, result) {
 
  if(result.operations["0"]["0"]=='comment'&&result.operations[0][1].parent_author == username){
-   let comment = {
+   sendNotification({
      author: result.operations[0][1].parent_author,
      body : result.operations[0][1].body,
      link : `https://steemit.com/@${result.operations[0][1].parent_author }/${result.operations[0][1].permlink}/`
-   }
-   console.log(comment)
+   })
  }
 
-
 });
+
+function sendNotification(comment) {
+  console.log(notification);
+
+  notification.notify({
+     'title': 'New Steem Comment!',
+     'message': `${comment.author} : ${comment.body.substring(0,20)}...`,
+      closeLabel: 'Close',
+      timeout: 20,
+      icon: './steem-icon-large.png',
+      actions: 'View',
+      open: comment.link
+   });
+
+   notification.on('click', function (notifierObject, options) {
+     open(comment.link)
+   });
+
+  console.log(comment)
+}
