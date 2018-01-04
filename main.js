@@ -1,11 +1,19 @@
-const {app, Menu, Tray, BrowserWindow, Screen} = require('electron')
+const {app, Menu, Tray, BrowserWindow, Screen } = require('electron')
 
 const path = require('path')
 const url = require('url')
 
 const steem = require('steem');
 const notifier = require('node-notifier');
-const Positioner = require('electron-positioner');
+
+const {ipcMain} = require('electron')
+
+let username;
+
+ipcMain.on('new-username', (event, data) => {
+  username = data
+})
+
 
 let tray;
 let appView;
@@ -25,21 +33,6 @@ function appReady() {
 
       tray.on('click', openWindow)
       tray.on('double-click', openWindow)
-      // add quit button in menu
-
-      let trayPosition = tray.getBounds()
-      console.log(trayPosition)
-      console.log(trayPosition.x)
-      console.log(trayPosition.y)
-
-      appView = new BrowserWindow({
-        width: 300,
-        height: 150,
-        frame: false,
-        show: false,
-        x: trayPosition.x - 150,
-        y: trayPosition.y + 35
-      })
 
       // right click quit app
       // close window if click off
@@ -49,9 +42,9 @@ function appReady() {
       // listen for username
       // show notifications for comments
       // create link or close for notifcation
-
-
 }
+
+
 function openWindow(data) {
   let trayPosition = tray.getBounds()
 
@@ -60,11 +53,11 @@ function openWindow(data) {
     height: 150,
     frame: true,
     show: false,
+    // resizable: false,
     x: trayPosition.x - 150,
     y: trayPosition.y + 35
   })
 
-  console.log('clicked', data)
   appView.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
@@ -83,3 +76,18 @@ app.on('window-all-closed', function () {
     app.quit()
   }
 })
+
+// main process code. You can also put them in separate files and require them here.
+var streamComments = steem.api.streamTransactions('head', function(err, result) {
+
+ if(result.operations["0"]["0"]=='comment'&&result.operations[0][1].parent_author == username){
+   let comment = {
+     author: result.operations[0][1].parent_author,
+     body : result.operations[0][1].body,
+     link : `https://steemit.com/@${result.operations[0][1].parent_author }/${result.operations[0][1].permlink}/`
+   }
+   console.log(comment)
+ }
+
+
+});
