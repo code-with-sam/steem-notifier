@@ -21,29 +21,13 @@ let appView;
 function appReady() {
 
     tray = new Tray('./steem-icon.png')
-      // const contextMenu = Menu.buildFromTemplate([
-      //   {label: 'Item1', type: 'radio'},
-      //   {label: 'Item2', type: 'radio'},
-      //   {label: 'Item3', type: 'radio', checked: true},
-      //   {label: 'Item4', type: 'radio'}
-      // ])
-      tray.setToolTip('This is my application.')
-      // tray.setContextMenu(contextMenu)
-      tray.getBounds()
-
+      tray.setToolTip('steem-notifier-v-0-1')
       tray.on('click', openWindow)
-      tray.on('double-click', openWindow)
 
-      // right click quit app
       // close window if click off
       // close window btn
-      // add screen for username
-      // store username
-      // listen for username
-      // show notifications for comments
       // create link or close for notifcation
 }
-
 
 function openWindow(data) {
   let trayPosition = tray.getBounds()
