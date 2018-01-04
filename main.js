@@ -5,7 +5,7 @@ const url = require('url')
 
 const steem = require('steem');
 // custom node notifier
-const notifier = require('./lib/node-notifier');
+const notification = require('./lib/node-notifier/index.js');
 const open = require("open");
 
 let username;
