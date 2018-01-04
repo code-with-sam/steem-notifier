@@ -1,6 +1,6 @@
 # steem-notifier v 0.1
 
-Steem-notifer is a minimal desktop/menubar/hidden-app, its configurable to show incoming notifications for you steem account
+Steem-notifer is a minimal desktop/menubar/hidden-app, its configurable to show incoming notifications for your steem account
 
 ![Screen](https://i.imgsafe.org/e3/e38415228a.png)
 
@@ -17,7 +17,7 @@ npm install
 npm start
 ```
 
-Steem-notifier will launch automatically to your taskbar. You can click on the taskbar icon to add your username, when you click ```activate``` you will begin receiving desktop notifications. you can click the notification to be sent to the comment in your browser, click closer or leave the notification to timeout as usual.  
+Steem-notifier will launch automatically to your taskbar. You can click on the taskbar icon to add your username, when you click ```activate``` you will begin receiving desktop notifications. you can click the notification to be sent to the comment in your browser, click closegi or leave the notification to timeout as usual.  
 
 
 ## future development
