@@ -20,14 +20,9 @@ let tray;
 let appView;
 
 function appReady() {
-
     tray = new Tray('./steem-icon.png')
-      tray.setToolTip('steem-notifier-v-0-1')
-      tray.on('click', openWindow)
-
-      // close window if click off
-      // close window btn
-      // create link or close for notifcation
+    tray.setToolTip('steem-notifier-v-0-1')
+    tray.on('click', openWindow)
 }
 
 function openWindow(data) {
@@ -38,7 +33,7 @@ function openWindow(data) {
     height: 150,
     frame: true,
     show: false,
-    // resizable: false,
+    resizable: false,
     x: trayPosition.x - 150,
     y: trayPosition.y + 35
   })
