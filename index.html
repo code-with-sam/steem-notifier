@@ -3,20 +3,55 @@
   <head>
     <meta charset="UTF-8">
     <title>steem-notifier</title>
-    <script>
-    </script>
+    <style>
+      body {
+        font-family: Inconsolata, 'Courier New', Courier, monospace;
+        margin: 0;
+        padding: 10px
+      }
+      h4 {
+        font-size: 18px;
+        margin: 0 0 5px 0;
+        color: #333;
+      }
+      p {
+        font-size: 14px;
+        color: #333;
+      }
+      input {
+        float: left;
+        border: solid 1px #333;
+        padding: 3px;
+      }
+      button {
+        float: left;
+        border: solid 1px #333;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: bold;
+        background: #333;
+        color: #fff;
+        height: 21px;
+      }
+      span {
+        float: left;
+        font-weight: 700;
+        padding-right: 5px;
+        font-size: 19px;
+      }
+      img {
+        float: right;
+      }
+    </style>
   </head>
   <body>
-    <h1>steem-notifier V0.1</h1>
+    <img src="steem-icon@2x.png">
+    <h4>steem-notifier V0.1</h4>
     <p>Get notified when you receive comments or replies.</p>
     <div class="">
-    @ <input class="username-input" type="text" placeholder="username"></input>
+    <span>@</span><input class="username-input" type="text" placeholder="username"></input>
     <button class="active-btn">Activate</btn>
     </div>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
 
     <script>
       // You can also require other files to run in this process
