@@ -53,7 +53,23 @@ function appReady() {
 
 }
 function openWindow(data) {
+  let trayPosition = tray.getBounds()
+
+  appView = new BrowserWindow({
+    width: 300,
+    height: 150,
+    frame: true,
+    show: false,
+    x: trayPosition.x - 150,
+    y: trayPosition.y + 35
+  })
+
   console.log('clicked', data)
+  appView.loadURL(url.format({
+    pathname: path.join(__dirname, 'index.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
   appView.show()
 }
 
