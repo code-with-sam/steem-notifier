@@ -4,9 +4,9 @@ const path = require('path')
 const url = require('url')
 
 const steem = require('steem');
-const notifier = require('node-notifier');
-
-const {ipcMain} = require('electron')
+// custom node notifier
+const notifier = require('./lib/node-notifier');
+const open = require("open");
 
 let username;
 

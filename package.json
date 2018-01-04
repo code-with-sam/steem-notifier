@@ -16,7 +16,7 @@
     "electron": "~1.7.8"
   },
   "dependencies": {
-    "node-notifier": "^5.1.2",
+    "open": "0.0.5",
     "steem": "^0.6.7"
   }
 }
