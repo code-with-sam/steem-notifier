@@ -73,12 +73,11 @@ var streamComments = steem.api.streamTransactions('head', function(err, result) 
   let transaction = result.operations[0][0]
 
   if(transaction == 'comment') {
-    let commentBody = result.operations[0][1];
+    let commentBody = result.operations[0][1].body;
     let mentionUsername = '@'+username;
     let includesMention = commentBody.includes(mentionUsername);
 
-    if(includesMention)
-      transation = 'mention'
+    transaction = includesMention ? 'mention' : 'comment'
   }
 
   // transation types -
@@ -115,9 +114,8 @@ switch(true){
         amount : result.operations[0][1].amount,
         link : `https://steemit.com/@${username}/transfers`
       })
-
   break;
-  case (transaction == 'voter'):
+  case (transaction == 'vote'):
       sendNotification({
         nType: 'vote',
         from: result.operations[0][1].voter,
@@ -135,7 +133,7 @@ switch(true){
   // break;
   case (transaction == 'mention'):
       sendNotification({
-        nType: 'Mention',
+        nType: 'mention',
         from: result.operations[0][1].parent_author,
         link : `https://steemit.com/@${result.operations[0][1].author }/${result.operations[0][1].permlink}/`
       })
@@ -156,7 +154,7 @@ function sendNotification(data) {
       message = `${data.from} : Sent you ${data.amount}`
     break;
     case 'vote':
-      message = `${data.from} : voted ${weight/100}%`
+      message = `${data.from} : voted ${data.weight/100}%`
     break;
     case 'mention':
       message = `${data.from} mentioned you...`
