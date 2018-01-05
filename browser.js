@@ -15,7 +15,7 @@ $('.active-btn').on('click', () => {
   enableNotifications(notifications)
 })
 $('.de-active-btn').on('click', () => {
-  disableNotifications(notifications)
+  disableNotifications()
 })
 
 $('.check-box').on('click', (e) => {

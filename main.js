@@ -19,7 +19,7 @@ ipcMain.on('enable-notifications', (event, data) => {
 })
 
 ipcMain.on('disable-notifications', (event, data) => {
-  stopStream(data.username, data.notifications)
+  stopStream()
 })
 
 
