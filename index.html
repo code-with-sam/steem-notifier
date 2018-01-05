@@ -4,35 +4,81 @@
     <meta charset="UTF-8">
     <title>steem-notifier</title>
     <style>
+      * {
+        box-sizing: border-box;
+      }
       body {
         font-family: Inconsolata, 'Courier New', Courier, monospace;
         margin: 0;
-        padding: 10px
+        padding: 10px;
+        background-color: #fafafa;
       }
-      h4 {
-        font-size: 18px;
-        margin: 0 0 5px 0;
+      h1 {
+        font-size: 14px;
+        margin: 8px 0 15px 45px;
         color: #333;
+      }
+      img {
+        position: absolute;
+        top: 5px;
+        left: 5px;
       }
       p {
         font-size: 14px;
         color: #333;
       }
+      ul {
+          display: block;
+          padding: 0;
+      }
+      li {
+        padding: 2px 0;
+        list-style: none;
+        margin: 5px 0;
+        position: relative;
+        border-bottom: dotted 1px #333;
+      }
+      .check-box {
+        height: 17px;
+        width: 17px;
+        border-radius: 2px;
+        border: solid 0.16rem #333;
+        position: absolute;
+        right: 0;
+        top: 8px;
+        transform: translateY(-50%);
+        cursor: pointer;
+      }
+      .check-box.checked {
+        background-color: #333;
+      }
       input {
-        float: left;
         border: solid 1px #333;
         padding: 3px;
+        width: calc(100% + 2px);
+        padding: 3px 5px 3px 8px;
+        margin: 5px -1px;
+        border-radius: 2px;
+        border: solid 2px #333;
+        font-size: 20px;
+        font-family: Inconsolata, 'Courier New', Courier, monospace;
+        outline: none;
       }
       button {
         float: left;
         border: solid 1px #333;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 2px;
         font-weight: bold;
         background: #333;
         color: #fff;
-        height: 21px;
+        width: 100%;
+        padding: 10px 0;
+        margin: 5px 0;
+        border-radius: 3px;
+        cursor: pointer;
       }
+      button:focus {outline:0;}
       span {
         float: left;
         font-weight: 700;
@@ -42,17 +88,65 @@
       img {
         float: right;
       }
+      .de-active-btn {
+        display: none;
+        background-color: #d67070;
+        border-color: #d67070;
+      }
+      .overlay {
+        position: absolute;
+        top: -145px;
+        right: 5px;
+        background: #acdc9c;
+        border-radius: 3px;
+        opacity: 0.5;
+        transform: translateY(0px);
+        transition: all 700ms;
+        background: #333;
+      }
+
+      .overlay p {
+        text-align: center;
+        padding: 4px 11px 6px 9px;
+        margin: 0;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+      }
+      .overlay.active {
+        transform: translateY(150px);
+        opacity: 0.97;
+      }
     </style>
   </head>
   <body>
-    <img src="steem-icon@2x.png">
-    <h4>steem-notifier V0.1.1</h4>
-    <p>Get notified when you receive comments or replies.</p>
-    <div class="">
-    <span>@</span><input class="username-input" type="text" placeholder="username"></input>
-    <button class="active-btn">Activate</btn>
+    <header>
+      <img src="steem-icon@2x.png">
+      <h1>steem-notifier V0.2.0</h1>
+    </header>
+    <main>
+      <div class="">
+        <!-- <span>@</span> -->
+        <input class="username-input" type="text" placeholder="username"></input>
+      </div>
+    </main>
+    <div class="options">
+      <ul>
+        <li data-notification="votes">Votes <span class="check-box "></span></li>
+        <li data-notification="mentions">Mentions<span class="check-box checked"></span></li>
+        <li data-notification="comments">Comments <span class="check-box checked"></span></li>
+        <li data-notification="transfers">Transfers<span class="check-box checked"></span></li>
+        <li data-notification="authorRewards">Author Rewards<span class="check-box checked"></span></li>
+        <li data-notification="commentRewards">Comment rewards<span class="check-box checked"></span></li>
+      </ul>
     </div>
-
+    <div class="">
+      <button class="active-btn">Enable Notifications</btn>
+      <button class="de-active-btn">Disable Notifications</btn>
+    </div>
+    <div class="overlay">
+      <p>Enabled ✅</p>
+    </div>
     <script>
       // You can also require other files to run in this process
       require('./browser.js')
