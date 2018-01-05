@@ -70,6 +70,17 @@ app.on('window-all-closed', function () {
 
 // main process code. You can also put them in separate files and require them here.
 var streamComments = steem.api.streamTransactions('head', function(err, result) {
+  let transaction = result.operations[0][0]
+
+  if(transaction == 'comment') {
+    let commentBody = result.operations[0][1];
+    let mentionUsername = '@'+username;
+    let includesMention = commentBody.includes(mentionUsername);
+
+    if(includesMention)
+      transation = 'mention'
+  }
+
   // transation types -
   // comment+comment_reply
   // /transfer/
@@ -82,20 +93,9 @@ var streamComments = steem.api.streamTransactions('head', function(err, result) 
   // ---------
   // mention
   //  .body:STRING contains -> @username
-  let transaction = result.operations[0][0]
-  let parentAuthor = result.operations[0][1].parent_author
-  let body = result.operations[0][1]
-  console.log(transaction)
-  // if(transaction == 'comment' && parentAuthor == username ) {
+  
+  // when you reach 100% voting power
 
-  // }
- // if(result.operations["0"]["0"]=='comment'&&result.operations[0][1].parent_author == username){
- //   sendNotification({
- //     author: result.operations[0][1].parent_author,
- //     body : result.operations[0][1].body,
- //     link : `https://steemit.com/@${result.operations[0][1].parent_author }/${result.operations[0][1].permlink}/`
- //   })
- // }
   let notificationType = '';
 
 switch(true){
@@ -117,6 +117,29 @@ switch(true){
       })
 
   break;
+  case (transaction == 'voter'):
+      sendNotification({
+        nType: 'vote',
+        from: result.operations[0][1].voter,
+        weight : result.operations[0][1].weight,
+        link : `https://steemit.com/@${result.operations[0][1].author }/${result.operations[0][1].permlink}/`
+      })
+  break;
+  // case (transaction == 'author_reward' || transaction == 'comment_reward' ):
+  //     sendNotification({
+  //       nType: 'vote',
+  //       from: result.operations[0][1].voter,
+  //       weight : result.operations[0][1].weight,
+  //       link : `https://steemit.com/@${result.operations[0][1].author }/${result.operations[0][1].permlink}/`
+  //     })
+  // break;
+  case (transaction == 'mention'):
+      sendNotification({
+        nType: 'Mention',
+        from: result.operations[0][1].parent_author,
+        link : `https://steemit.com/@${result.operations[0][1].author }/${result.operations[0][1].permlink}/`
+      })
+  break;
   default:
     console.log('default');
 }
@@ -131,6 +154,12 @@ function sendNotification(data) {
     break;
     case 'transfer':
       message = `${data.from} : Sent you ${data.amount}`
+    break;
+    case 'vote':
+      message = `${data.from} : voted ${weight/100}%`
+    break;
+    case 'mention':
+      message = `${data.from} mentioned you...`
     break;
   }
 
