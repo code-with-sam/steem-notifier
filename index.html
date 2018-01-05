@@ -45,9 +45,26 @@
     </style>
   </head>
   <body>
-    <img src="steem-icon@2x.png">
-    <h4>steem-notifier V0.1.1</h4>
-    <p>Get notified when you receive comments or replies.</p>
+    <header>
+      <img src="steem-icon@2x.png">
+      <h1>steem-notifier V0.2.0</h1>
+    </header>
+    <main>
+      <div class="">
+        <!-- <span>@</span> -->
+        <input class="username-input" type="text" placeholder="username"></input>
+      </div>
+    </main>
+    <div class="options">
+      <ul>
+        <li data-notification="votes">Votes <span class="check-box "></span></li>
+        <li data-notification="mentions">Mentions<span class="check-box checked"></span></li>
+        <li data-notification="comments">Comments <span class="check-box checked"></span></li>
+        <li data-notification="transfers">Transfers<span class="check-box checked"></span></li>
+        <li data-notification="authorRewards">Author Rewards<span class="check-box checked"></span></li>
+        <li data-notification="commentRewards">Comment rewards<span class="check-box checked"></span></li>
+      </ul>
+    </div>
     <div class="">
     <span>@</span><input class="username-input" type="text" placeholder="username"></input>
     <button class="active-btn">Activate</btn>

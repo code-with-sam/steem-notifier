@@ -8,7 +8,15 @@ const steem = require('steem');
 const notification = require('./lib/node-notifier/index.js');
 const open = require("open");
 
-let username;
+let stream;
+let usernameStore;
+let status;
+
+ipcMain.on('enable-notifications', (event, data) => {
+  usernameStore = data.username;
+  console.log('notifications', data)
+  startStream(data.username, data.notifications)
+})
 
 ipcMain.on('new-username', (event, data) => {
   console.log('username set', data)
@@ -68,74 +76,81 @@ app.on('window-all-closed', function () {
   }
 })
 
-steem.api.streamBlockNumber((err, blockNum) => {
-    steem.api.getOpsInBlock(blockNum, false, (err, opperations) =>{
-        opperations.forEach( (tx, i, arr) => {
+function stopStream(){
+  if (typeof stream !== undefined) stream()
+}
 
-          let transaction = tx.op[0]
+function startStream(USERNAME){
 
-          if(transaction == 'comment') {
-            let commentBody = tx.op[1].body;
-            let mentionUsername = '@'+username;
-            let includesMention = commentBody.includes(mentionUsername);
-            transaction = includesMention ? 'mention' : 'comment'
-          }
+  stream = steem.api.streamBlockNumber((err, blockNum) => {
+      steem.api.getOpsInBlock(blockNum, false, (err, opperations) =>{
+          opperations.forEach( (tx, i, arr) => {
 
-          switch(true){
-            case (transaction == 'comment' && tx.op[1].parent_author == username):
-                sendNotification({
-                  nType: 'comment',
-                  author: tx.op[1].parent_author,
-                  body : tx.op[1].body,
-                  link : `https://steemit.com/@${tx.op[1].parent_author }/${tx.op[1].permlink}/`
-                })
-            break;
-            case (transaction == 'transfer' && tx.op[1].to == username ):
-                sendNotification({
-                  nType: 'transfer',
-                  from: tx.op[1].from,
-                  amount : tx.op[1].amount,
-                  link : `https://steemit.com/@${username}/transfers`
-                })
-            break;
-            case (transaction == 'vote' && tx.op[1].author == username):
-                sendNotification({
-                  nType: 'vote',
-                  from: tx.op[1].voter,
-                  weight :  tx.op[1].weight ? tx.op[1].weight : 10000
-                  link : `https://steemit.com/@${tx.op[1].author }/${tx.op[1].permlink}/`
-                })
-            break;
-            case (transaction == 'author_reward' tx.op[1].author == username ):
-                sendNotification({
-                  nType: 'Author Reward',
-                  sbd:  tx.op[1].sbd_payout,
-                  vests: tx.op[1].vesting_payout,
-                  steem: tx.op[1].steem_payout,
-                  link : `https://steemit.com/@${tx.op[1].author }/${tx.op[1].permlink}/`
-                })
-            break;
-            case (transaction == 'comment_reward' || tx.op[1].author == username ):
-                sendNotification({
-                  nType: 'Comment Reward',
-                  sbd:  tx.op[1].sbd_payout,
-                  vests: tx.op[1].vesting_payout,
-                  steem: tx.op[1].steem_payout,
-                  link : `https://steemit.com/@${tx.op[1].author }/${tx.op[1].permlink}/`
-                })
-            break;
-            case (transaction == 'mention'):
-                sendNotification({
-                  nType: 'mention',
-                  from: tx.op[1].parent_author,
-                  link : `https://steemit.com/@${tx.op[1].author }/${tx.op[1].permlink}/`
-                })
-            break;
-            default:
+            let transaction = tx.op[0]
+
+            if(transaction == 'comment') {
+              let commentBody = tx.op[1].body;
+              let mentionUsername = '@'+USERNAME;
+              let includesMention = commentBody.includes(mentionUsername);
+              transaction = includesMention ? 'mention' : 'comment'
             }
-        })
-    })
-});
+
+            switch(true){
+              case (enable.comments == true && transaction == 'comment' && tx.op[1].parent_author == USERNAME):
+                  sendNotification({
+                    nType: 'comment',
+                    author: tx.op[1].parent_author,
+                    body : tx.op[1].body,
+                    link : `https://steemit.com/@${tx.op[1].parent_author }/${tx.op[1].permlink}/`
+                  })
+              break;
+              case (enable.transfers == true && transaction == 'transfer' && tx.op[1].to == USERNAME ):
+                  sendNotification({
+                    nType: 'transfer',
+                    from: tx.op[1].from,
+                    amount : tx.op[1].amount,
+                    link : `https://steemit.com/@${USERNAME}/transfers`
+                  })
+              break;
+              case (enable.votes == true && transaction == 'vote' && tx.op[1].author == USERNAME):
+                  sendNotification({
+                    nType: 'vote',
+                    from: tx.op[1].voter,
+                    weight :  tx.op[1].weight ? tx.op[1].weight : 10000,
+                    link : `https://steemit.com/@${tx.op[1].author }/${tx.op[1].permlink}/`
+                  })
+              break;
+              case (enable.authorRewards == true && transaction == 'author_reward' && tx.op[1].author == USERNAME ):
+                  sendNotification({
+                    nType: 'Author Reward',
+                    sbd:  tx.op[1].sbd_payout,
+                    vests: tx.op[1].vesting_payout,
+                    steem: tx.op[1].steem_payout,
+                    link : `https://steemit.com/@${tx.op[1].author }/${tx.op[1].permlink}/`
+                  })
+              break;
+              case (enable.CommentRewards == true && transaction == 'comment_reward' && tx.op[1].author == USERNAME ):
+                  sendNotification({
+                    nType: 'Comment Reward',
+                    sbd:  tx.op[1].sbd_payout,
+                    vests: tx.op[1].vesting_payout,
+                    steem: tx.op[1].steem_payout,
+                    link : `https://steemit.com/@${tx.op[1].author }/${tx.op[1].permlink}/`
+                  })
+              break;
+              case (enable.mentions == true && transaction == 'mention'):
+                  sendNotification({
+                    nType: 'mention',
+                    from: tx.op[1].parent_author,
+                    link : `https://steemit.com/@${tx.op[1].author }/${tx.op[1].permlink}/`
+                  })
+              break;
+              default:
+              }
+          })
+      })
+  });
+}
 
 function sendNotification(data) {
   let message;
