@@ -82,7 +82,7 @@ steem.api.streamBlockNumber((err, blockNum) => {
           }
 
           switch(true){
-            case (transaction == 'comment'):
+            case (transaction == 'comment' && tx.op[1].parent_author == username):
                 sendNotification({
                   nType: 'comment',
                   author: tx.op[1].parent_author,
@@ -90,7 +90,7 @@ steem.api.streamBlockNumber((err, blockNum) => {
                   link : `https://steemit.com/@${tx.op[1].parent_author }/${tx.op[1].permlink}/`
                 })
             break;
-            case (transaction == 'transfer'):
+            case (transaction == 'transfer' && tx.op[1].to == username ):
                 sendNotification({
                   nType: 'transfer',
                   from: tx.op[1].from,
@@ -98,7 +98,7 @@ steem.api.streamBlockNumber((err, blockNum) => {
                   link : `https://steemit.com/@${username}/transfers`
                 })
             break;
-            case (transaction == 'vote'):
+            case (transaction == 'vote' && tx.op[1].author == username):
                 sendNotification({
                   nType: 'vote',
                   from: tx.op[1].voter,
@@ -106,7 +106,7 @@ steem.api.streamBlockNumber((err, blockNum) => {
                   link : `https://steemit.com/@${tx.op[1].author }/${tx.op[1].permlink}/`
                 })
             break;
-            case (transaction == 'author_reward'):
+            case (transaction == 'author_reward' tx.op[1].author == username ):
                 sendNotification({
                   nType: 'Author Reward',
                   sbd:  tx.op[1].sbd_payout,
@@ -115,7 +115,7 @@ steem.api.streamBlockNumber((err, blockNum) => {
                   link : `https://steemit.com/@${tx.op[1].author }/${tx.op[1].permlink}/`
                 })
             break;
-            case (transaction == 'comment_reward'):
+            case (transaction == 'comment_reward' || tx.op[1].author == username ):
                 sendNotification({
                   nType: 'Comment Reward',
                   sbd:  tx.op[1].sbd_payout,
