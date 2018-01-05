@@ -11,6 +11,7 @@ let notifications = {
 }
 
 $('.active-btn').on('click', () => {
+  if ($('.username-input').val() === '') return false
   enableNotifications(notifications)
 })
 $('.de-active-btn').on('click', () => {
