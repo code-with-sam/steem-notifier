@@ -85,8 +85,8 @@ function stopStream(){
 function startStream(USERNAME, enable){
 
   stream = steem.api.streamBlockNumber((err, blockNum) => {
-      steem.api.getOpsInBlock(blockNum, false, (err, opperations) =>{
-          opperations.forEach( (tx, i, arr) => {
+      steem.api.getOpsInBlock(blockNum, false, (err, operations) =>{
+          operations.forEach( (tx, i, arr) => {
 
             let transaction = tx.op[0]
 
