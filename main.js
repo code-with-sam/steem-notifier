@@ -17,15 +17,21 @@ ipcMain.on('new-username', (event, data) => {
 
 
 let tray;
-let appView;
+let appView = null;
 
 function appReady() {
     tray = new Tray('./steem-icon.png')
     tray.setToolTip('steem-notifier-v-0-1')
-    tray.on('click', openWindow)
+    tray.on('click', () => {
+      if (appView === null){
+        createWindow();
+      } else {
+        openWindow(appView);
+      }
+    })
 }
 
-function openWindow(data) {
+function createWindow() {
   let trayPosition = tray.getBounds()
 
   appView = new BrowserWindow({
@@ -43,7 +49,11 @@ function openWindow(data) {
     protocol: 'file:',
     slashes: true
   }))
-  appView.show()
+  openWindow(appView)
+}
+
+function openWindow(appWindow) {
+  appWindow.show()
 }
 
 app.on('ready', appReady)
@@ -52,6 +62,7 @@ app.on('ready', appReady)
 app.on('window-all-closed', function () {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
+  appView = null
   if (process.platform !== 'darwin') {
     app.quit()
   }
