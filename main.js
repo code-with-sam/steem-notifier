@@ -10,7 +10,6 @@ const open = require("open");
 
 let stream;
 let usernameStore;
-let status;
 
 ipcMain.on('enable-notifications', (event, data) => {
   usernameStore = data.username;
