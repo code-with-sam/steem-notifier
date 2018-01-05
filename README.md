@@ -1,4 +1,4 @@
-# steem-notifier v 0.1
+# steem-notifier v 0.1.1
 
 Steem-notifer is a minimal desktop/menubar/hidden-app, its configurable to show incoming notifications for your steem account
 
