@@ -27,6 +27,9 @@ let tray;
 let appView = null;
 
 function appReady() {
+    if (app.dock)
+      app.dock.hide()
+
     tray = new Tray('./steem-icon.png')
     tray.setToolTip('steem-notifier-v-0-1')
     tray.on('click', () => {
