@@ -70,33 +70,81 @@ app.on('window-all-closed', function () {
 
 // main process code. You can also put them in separate files and require them here.
 var streamComments = steem.api.streamTransactions('head', function(err, result) {
+  // transation types -
+  // comment+comment_reply
+  // /transfer/
+  // vote/
+  // payout ------
+  // author_reward,
+  // curation_reward,
+  // comment_reward,
+  // liquidity_reward,
+  // ---------
+  // mention
+  //  .body:STRING contains -> @username
+  let transaction = result.operations[0][0]
+  let parentAuthor = result.operations[0][1].parent_author
+  let body = result.operations[0][1]
+  console.log(transaction)
+  // if(transaction == 'comment' && parentAuthor == username ) {
 
- if(result.operations["0"]["0"]=='comment'&&result.operations[0][1].parent_author == username){
-   sendNotification({
-     author: result.operations[0][1].parent_author,
-     body : result.operations[0][1].body,
-     link : `https://steemit.com/@${result.operations[0][1].parent_author }/${result.operations[0][1].permlink}/`
-   })
- }
+  // }
+ // if(result.operations["0"]["0"]=='comment'&&result.operations[0][1].parent_author == username){
+ //   sendNotification({
+ //     author: result.operations[0][1].parent_author,
+ //     body : result.operations[0][1].body,
+ //     link : `https://steemit.com/@${result.operations[0][1].parent_author }/${result.operations[0][1].permlink}/`
+ //   })
+ // }
+  let notificationType = '';
 
+switch(true){
+  case (transaction == 'comment'):
+      sendNotification({
+        nType: 'comment',
+        author: result.operations[0][1].parent_author,
+        body : result.operations[0][1].body,
+        link : `https://steemit.com/@${result.operations[0][1].parent_author }/${result.operations[0][1].permlink}/`
+      })
+
+  break;
+  case (transaction == 'transfer'):
+      sendNotification({
+        nType: 'transfer',
+        from: result.operations[0][1].from,
+        amount : result.operations[0][1].amount,
+        link : `https://steemit.com/@${username}/transfers`
+      })
+
+  break;
+  default:
+    console.log('default');
+}
 });
 
-function sendNotification(comment) {
-  console.log(notification);
+function sendNotification(data) {
+
+  let message;
+  switch(data.nType){
+    case 'comment':
+      message = `${data.author} : ${data.body.substring(0,20)}...`
+    break;
+    case 'transfer':
+      message = `${data.from} : Sent you ${data.amount}`
+    break;
+  }
 
   notification.notify({
-     'title': 'New Steem Comment!',
-     'message': `${comment.author} : ${comment.body.substring(0,20)}...`,
+      title: `New Steem ${data.nType}!`,
+      message: message,
       closeLabel: 'Close',
       timeout: 20,
       icon: './steem-icon-large.png',
       actions: 'View',
-      open: comment.link
+      open: data.link
    });
 
    notification.on('click', function (notifierObject, options) {
-     open(comment.link)
+     open(data.link)
    });
-
-  console.log(comment)
 }
