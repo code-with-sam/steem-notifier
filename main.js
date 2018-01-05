@@ -43,6 +43,12 @@ function appReady() {
 
 function createWindow() {
   let trayPosition = tray.getBounds()
+  let yPos;
+  if (process.platform !== 'darwin') {
+    yPos = trayPosition.y - 395
+  } else {
+    yPos = trayPosition.y +35
+  }
 
   appView = new BrowserWindow({
     width: 250,
@@ -50,8 +56,8 @@ function createWindow() {
     frame: true,
     show: false,
     resizable: false,
-    x: trayPosition.x - 150,
-    y: trayPosition.y + 35
+    x: trayPosition.x - 125,
+    y: yPos
   })
 
   appView.loadURL(url.format({
