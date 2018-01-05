@@ -1,6 +1,6 @@
 {
   "name": "steem-notifier",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A minimal native notifier",
   "main": "main.js",
   "scripts": {
