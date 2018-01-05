@@ -18,9 +18,8 @@ ipcMain.on('enable-notifications', (event, data) => {
   startStream(data.username, data.notifications)
 })
 
-ipcMain.on('new-username', (event, data) => {
-  console.log('username set', data)
-  username = data
+ipcMain.on('disable-notifications', (event, data) => {
+  stopStream(data.username, data.notifications)
 })
 
 

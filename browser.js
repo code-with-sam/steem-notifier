@@ -28,3 +28,19 @@ $('.check-box').on('click', (e) => {
     notifications[checkData] = true;
   }
 })
+
+function enableNotifications(notifications){
+  let username = $('.username-input').val();
+  let data = {
+    notifications: notifications,
+    username : username
+  }
+  ipcRenderer.send('enable-notifications', data)
+  showOverlay('Enabled ✅');
+  switchButtons();
+}
+function disableNotifications(){
+  ipcRenderer.send('disable-notifications')
+  switchButtons()
+  showOverlay('Disabled ❌')
+}
