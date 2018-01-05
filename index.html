@@ -88,6 +88,35 @@
       img {
         float: right;
       }
+      .de-active-btn {
+        display: none;
+        background-color: #d67070;
+        border-color: #d67070;
+      }
+      .overlay {
+        position: absolute;
+        top: -145px;
+        right: 5px;
+        background: #acdc9c;
+        border-radius: 3px;
+        opacity: 0.5;
+        transform: translateY(0px);
+        transition: all 700ms;
+        background: #333;
+      }
+
+      .overlay p {
+        text-align: center;
+        padding: 4px 11px 6px 9px;
+        margin: 0;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+      }
+      .overlay.active {
+        transform: translateY(150px);
+        opacity: 0.97;
+      }
     </style>
   </head>
   <body>
@@ -112,10 +141,12 @@
       </ul>
     </div>
     <div class="">
-    <span>@</span><input class="username-input" type="text" placeholder="username"></input>
-    <button class="active-btn">Activate</btn>
+      <button class="active-btn">Enable Notifications</btn>
+      <button class="de-active-btn">Disable Notifications</btn>
     </div>
-
+    <div class="overlay">
+      <p>Enabled ✅</p>
+    </div>
     <script>
       // You can also require other files to run in this process
       require('./browser.js')

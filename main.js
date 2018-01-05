@@ -42,8 +42,8 @@ function createWindow() {
   let trayPosition = tray.getBounds()
 
   appView = new BrowserWindow({
-    width: 300,
-    height: 150,
+    width: 250,
+    height: 360,
     frame: true,
     show: false,
     resizable: false,

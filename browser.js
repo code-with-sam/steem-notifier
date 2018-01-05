@@ -1,4 +1,5 @@
 const {ipcRenderer} = require('electron')
+const $ = require('jquery');
 
 let notifications = {
   comments : true,
@@ -43,4 +44,21 @@ function disableNotifications(){
   ipcRenderer.send('disable-notifications')
   switchButtons()
   showOverlay('Disabled ❌')
+}
+
+function showOverlay(message, action){
+  $('.overlay p').text(message)
+  $('.overlay').addClass('active')
+  setTimeout(()=>{
+    $('.overlay').removeClass('active')
+  }, 2000)
+}
+function switchButtons(){
+  if( $('.active-btn').is(":visible") ) {
+    $('.active-btn').hide()
+    $('.de-active-btn').show()
+  } else {
+    $('.de-active-btn').hide()
+    $('.active-btn').show()
+  }
 }
