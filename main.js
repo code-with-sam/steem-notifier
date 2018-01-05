@@ -82,7 +82,7 @@ function stopStream(){
   if (typeof stream !== undefined) stream()
 }
 
-function startStream(USERNAME){
+function startStream(USERNAME, enable){
 
   stream = steem.api.streamBlockNumber((err, blockNum) => {
       steem.api.getOpsInBlock(blockNum, false, (err, opperations) =>{
