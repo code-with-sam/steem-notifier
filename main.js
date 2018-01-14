@@ -53,8 +53,8 @@ function createWindow() {
   }
 
   appView = new BrowserWindow({
-    width: 450,
-    height: 250,
+    width: 500,
+    height: 300,
     frame: true,
     show: false,
     // resizable: false,
