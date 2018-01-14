@@ -19,6 +19,9 @@ $('.de-active-btn').on('click', () => {
 })
 
 $('.check-box').on('click', (e) => {
+  ipcRenderer.send('enable-notifications', {username: 'sambillingham'})
+
+
   let currentCheckBox = $(e.currentTarget)
   let checkData = currentCheckBox.parent().data('notification')
   let isChecked = currentCheckBox.hasClass('checked');
@@ -29,6 +32,11 @@ $('.check-box').on('click', (e) => {
     currentCheckBox.addClass('checked')
     notifications[checkData] = true;
   }
+})
+
+
+ipcRenderer.on('user-data', (event, data) => {
+  console.log(data)
 })
 
 function enableNotifications(notifications){

@@ -17,7 +17,11 @@ steem.api.setOptions({ url: 'wss://rpc.buildteam.io' });
 ipcMain.on('enable-notifications', (event, data) => {
   usernameStore = data.username;
   console.log('notifications', data)
-  startStream(data.username, data.notifications)
+
+  getUserInfo(data.username)
+    .then(data => event.sender.send('user-data', data))
+
+  // startStream(data.username, data.notifications)
 })
 
 ipcMain.on('disable-notifications', (event, data) => {
@@ -202,3 +206,47 @@ function sendNotification(data) {
      open(data.link)
    });
 }
+
+
+function getUserInfo(username){
+  return new Promise( (resolve, reject) => {
+      steem.api.getAccounts([username], (err, result) => {
+          let user  = result[0]
+
+          let jsonData = user.json_metadata ? JSON.parse(user.json_metadata).profile : {}
+
+          let info = {
+            name: user.name,
+            bio: jsonData.about,
+            image: jsonData.profile_image ? 'https://steemitimages.com/2048x512/' + jsonData.profile_image : '',
+            numOfPosts: user.post_count,
+            followerCount: '',
+            followingCount: '',
+            usdValue: '',
+          }
+
+          steem.api.getFollowCount(user.name, (err, result) => {
+                info.followerCount = result.follower_count
+                info.followingCount = result.following_count
+              })
+
+          let usd  = steem.formatter.estimateAccountValue(user)
+
+          usd.then(data => {
+            info.usdValue = data
+            resolve(info)
+          })
+      })
+  });
+}
+
+
+
+
+
+
+// function getGlobalProps(server){
+//   return steem.api.getDynamicGlobalProperties((err, result) => {
+//     totalVestingShares = result.total_vesting_shares;
+//     totalVestingFundSteem = result.total_vesting_fund_steem;
+// })
