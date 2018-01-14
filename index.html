@@ -10,7 +10,7 @@
       body {
         font-family: Inconsolata, 'Courier New', Courier, monospace;
         margin: 0;
-        background-color: #fafafa;
+        background-color: #f9f9f9;
       }
       .cf {
         overflow: auto;
@@ -29,6 +29,9 @@
         border-bottom: dotted 1px #ddd;
         font-size: 0.77rem;
       }
+      li:last-of-type {
+        border-bottom: none;
+      }
       .check-box {
         height: 14px;
         width: 14px;
@@ -36,7 +39,7 @@
         border: solid 0.12rem #bbb;
         position: absolute;
         right: 0;
-        top: 8px;
+        top: 7px;
         transform: translateY(-50%);
         cursor: pointer;
       }
@@ -116,27 +119,40 @@
 
 
       .notifactions__user {
-        width: 100%;
-        padding: 15px 15px 0;
+        width: 95%;
+        margin: 10px auto;
+        box-shadow: 0 0 40px rgba(0,0,0,0.1);
+        background-color: #fff;
+        border-radius: 5px;
+        padding: 5px 15px 5px;
+
       }
 
       .notifications__select {
-        width: 100%;
+        /*width: 100%;*/
+        width: 95%;
+        margin: 10px auto;
+        box-shadow: 0 0 40px rgba(0,0,0,0.1);
+        background-color: #fff;
+        border-radius: 5px;
+        /*padding: 15px 15px 0;*/
+
       }
       .notifications__select ul {
         width: 33.333%;
         float: left;
-        padding: 15px 12px 5px;
+        padding: 10px 12px 10px;
         margin: 0;
       }
       .notifications__user-profile {
         float: left;
-        padding: 20px 0 20px 50px;
+        padding: 20px 0 20px 10px;
 
       }
       .notifications__user-inner {
         float: left;
         padding-left: 30px;
+        margin-top: 20px;
       }
       .notifactions__user-name {
         font-size: 15px;
@@ -146,7 +162,8 @@
       .notifactions__user-bio,
       .notifactions__user-stats,
       .notifactions__user-value {
-        line-height: 0.8
+        line-height: 0.8;
+        margin: 0 0 10px 0;
       }
 
 
@@ -193,7 +210,7 @@
           <p class="notifactions__user-value">Account Value: </p>
         </div>
       </div>
-      <hr>
+      <!-- <hr> -->
       <div class="notifications__select cf">
         <ul>
           <li data-notification="votes">votes <span class="check-box "></span></li>
