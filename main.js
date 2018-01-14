@@ -1,4 +1,5 @@
-const {app, Menu, Tray, BrowserWindow, Screen, ipcMain } = require('electron')
+const electron = require('electron')
+const {app, Menu, Tray, BrowserWindow, Screen, ipcMain } = electron
 
 const path = require('path')
 const url = require('url')
@@ -9,19 +10,19 @@ const notification = require('./lib/node-notifier/index.js');
 const open = require("open");
 
 let stream;
-let usernameStore;
+let dataStoreForSleep;
 
 steem.api.setOptions({ url: 'wss://rpc.buildteam.io' });
 
 
 ipcMain.on('enable-notifications', (event, data) => {
-  usernameStore = data.username;
+  dataStoreForSleep = data;
   console.log('notifications', data)
 
   getUserInfo(data.username)
     .then(data => event.sender.send('user-data', data))
 
-  startStream(data.username, data.notifications)
+    startStream(data.username, data.notifications)
 })
 
 ipcMain.on('disable-notifications', (event, data) => {
@@ -45,6 +46,15 @@ function appReady() {
         openWindow(appView);
       }
     })
+
+  electron.powerMonitor.on('suspend', () => {
+    console.log('The system is going to sleep')
+    stopStream()
+  })
+  electron.powerMonitor.on('resume', () => {
+    console.log('The system is starting again')
+    startStream(dataStoreForSleep.username, dataStoreForSleep.notifications)
+  })
 }
 
 function createWindow() {
@@ -91,10 +101,13 @@ app.on('window-all-closed', function () {
 })
 
 function stopStream(){
-  if (typeof stream !== undefined) stream()
+  if (typeof stream !== undefined) {
+    stream()
+    console.log('stream stopped')
+  }
 }
 
-function startStream(USERNAME, enable){
+  function startStream(USERNAME, enable){
 
   stream = steem.api.streamBlockNumber((err, blockNum) => {
       steem.api.getOpsInBlock(blockNum, false, (err, operations) =>{
