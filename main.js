@@ -11,6 +11,9 @@ const open = require("open");
 let stream;
 let usernameStore;
 
+steem.api.setOptions({ url: 'wss://rpc.buildteam.io' });
+
+
 ipcMain.on('enable-notifications', (event, data) => {
   usernameStore = data.username;
   console.log('notifications', data)
