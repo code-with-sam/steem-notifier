@@ -11,6 +11,7 @@
         font-family: Inconsolata, 'Courier New', Courier, monospace;
         margin: 0;
         background-color: #f9f9f9;
+        max-height: 300px;
       }
       .cf {
         overflow: auto;
@@ -57,7 +58,6 @@
 
 
       .intro-pane {
-        display: none;
         position: fixed;
         height: 100vh;
         width: 100vw;
@@ -81,6 +81,14 @@
         box-shadow: 0 0 38px rgba(30,30,30,0.23);
         border-radius: 4px;
         padding: 15px 30px;
+
+        transition: all 600ms;
+        transform: translate(-50%, -50%);
+        opacity: 1;
+      }
+      .animation-start {
+        transform: translate(-50%, -45%);
+        opacity: 0;
       }
       .intro-pane__header {
         line-height: 50px;
@@ -126,6 +134,10 @@
         border-radius: 5px;
         padding: 5px 15px 5px;
 
+        transition: all 600ms;
+        transition-delay: 400ms;
+        transform: translateY(0px);
+        opacity: 1;
       }
 
       .notifications__select {
@@ -136,13 +148,24 @@
         background-color: #fff;
         border-radius: 5px;
         /*padding: 15px 15px 0;*/
-
+        transition: all 600ms;
+        transition-delay: 600ms;
+        transform: translateY(0px);
+        opacity: 1;
       }
+      .animation-hidden {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+
       .notifications__select ul {
-        width: 33.333%;
+        width: 35.5%;
         float: left;
         padding: 10px 12px 10px;
         margin: 0;
+      }
+      .notifications__select ul:first-of-type {
+        width: 29%;
       }
       .notifications__user-profile {
         float: left;
@@ -165,7 +188,13 @@
         line-height: 0.8;
         margin: 0 0 10px 0;
       }
-
+      .notifactions__user-stats {
+        margin-top: 20px;
+      }
+      .notifactions__user-stats,
+      .notifactions__user-value {
+        font-size: 11px;
+      }
 
       .notifactions__user-image {
 
@@ -186,7 +215,7 @@
 
     <main>
       <section class="intro-pane">
-          <div class="intro-pane__inner">
+          <div class="intro-pane__inner animation-start">
             <div class="intro-pane__header">
                 <img class="intro-pane__logo" src="steem-icon@2x.png">
                 <h1 class="intro-pane__title">Steem Notifier</h1>
@@ -198,20 +227,20 @@
           </div>
       </section>
 
-    <section class="notifications ">
-      <div class="notifactions__user cf">
+    <section class="notifications   ">
+      <div class="notifactions__user animation-hidden cf">
         <div class="notifications__user-profile">
           <img class="notifactions__user-image" src="http://placehold.it/100x100">
         </div>
         <div class="notifications__user-inner">
-          <h2 class="notifactions__user-name">Sam Billingham</h2>
+          <h2 class="notifactions__user-name">- - - - - - -</h2>
           <p class="notifactions__user-bio">Coder | Developer | Photographer</p>
           <p class="notifactions__user-stats"> Following | Followers | Posts </p>
           <p class="notifactions__user-value">Account Value: </p>
         </div>
       </div>
       <!-- <hr> -->
-      <div class="notifications__select cf">
+      <div class="notifications__select animation-hidden  cf">
         <ul>
           <li data-notification="votes">votes <span class="check-box "></span></li>
           <li data-notification="mentions">mentions<span class="check-box checked"></span></li>

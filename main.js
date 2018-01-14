@@ -21,7 +21,7 @@ ipcMain.on('enable-notifications', (event, data) => {
   getUserInfo(data.username)
     .then(data => event.sender.send('user-data', data))
 
-  // startStream(data.username, data.notifications)
+  startStream(data.username, data.notifications)
 })
 
 ipcMain.on('disable-notifications', (event, data) => {
