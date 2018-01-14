@@ -53,11 +53,11 @@ function createWindow() {
   }
 
   appView = new BrowserWindow({
-    width: 250,
-    height: 360,
+    width: 450,
+    height: 250,
     frame: true,
     show: false,
-    resizable: false,
+    // resizable: false,
     x: trayPosition.x - 125,
     y: yPos
   })

@@ -13,16 +13,7 @@
         padding: 10px;
         background-color: #fafafa;
       }
-      h1 {
-        font-size: 14px;
-        margin: 8px 0 15px 45px;
-        color: #333;
-      }
-      img {
-        position: absolute;
-        top: 5px;
-        left: 5px;
-      }
+
       p {
         font-size: 14px;
         color: #333;
@@ -53,16 +44,6 @@
         background-color: #333;
       }
       input {
-        border: solid 1px #333;
-        padding: 3px;
-        width: calc(100% + 2px);
-        padding: 3px 5px 3px 8px;
-        margin: 5px -1px;
-        border-radius: 2px;
-        border: solid 2px #333;
-        font-size: 20px;
-        font-family: Inconsolata, 'Courier New', Courier, monospace;
-        outline: none;
       }
       button {
         float: left;
@@ -85,9 +66,7 @@
         padding-right: 5px;
         font-size: 19px;
       }
-      img {
-        float: right;
-      }
+
       .de-active-btn {
         display: none;
         background-color: #d67070;
@@ -117,19 +96,81 @@
         transform: translateY(150px);
         opacity: 0.97;
       }
+
+      .intro-pane {
+        display: none;
+        position: fixed;
+        height: 100vh;
+        width: 100vw;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255,255,255,0.92);
+        padding: 15vh 15vw;
+        z-index: 1;
+      }
+      .intro-pane__inner {
+        /*padding: */
+        text-align: center;
+        background-color: #fafafa;
+        border: #fdfdfd solid 1px;
+        box-shadow: 0 0 30px rgba(0,0,0,0.15);
+        border-radius: 4px;
+        padding: 15px 30px;
+      }
+      .intro-pane__header {
+        line-height: 50px;
+      }
+      .intro-pane__logo {
+        display: inline-block;
+        vertical-align: middle;
+
+      }
+      .intro-pane__title {
+        display: inline-block;
+        font-size: 16px;
+        color: #333;
+        vertical-align: middle;
+        margin: 4px 0 0;
+
+      }
+      .intro-pane__username {
+        border: solid 1px #333;
+        padding: 3px;
+        width: calc(100% - 24px);
+        padding: 3px 5px 3px 8px;
+        margin: 5px -1px;
+        border-radius: 2px;
+        border: solid 2px #333;
+        font-size: 20px;
+        font-family: Inconsolata, 'Courier New', Courier, monospace;
+        outline: none;
+      }
+      .intro-pane__at {
+        display: inline-block;
+        font-size: 28px;
+        line-height: 33px;
+        margin-top: 5px;
+      }
     </style>
   </head>
   <body>
-    <header>
-      <img src="steem-icon@2x.png">
-      <h1>steem-notifier V0.2.0</h1>
-    </header>
+
     <main>
-      <div class="">
-        <!-- <span>@</span> -->
-        <input class="username-input" type="text" placeholder="username"></input>
-      </div>
-    </main>
+      <section class="intro-pane">
+          <div class="intro-pane__inner">
+            <div class="intro-pane__header">
+                <img class="intro-pane__logo" src="steem-icon@2x.png">
+                <h1 class="intro-pane__title">Steem Notifier</h1>
+            </div>
+            <div class="intro-pane__information">
+              <span class="intro-pane__at">@</span>
+              <input class="intro-pane__username" type="text" placeholder="username"></input>
+            </div>
+          </div>
+      </section>
+
     <div class="options">
       <ul>
         <li data-notification="votes">Votes <span class="check-box "></span></li>
@@ -144,6 +185,7 @@
       <button class="active-btn">Enable Notifications</btn>
       <button class="de-active-btn">Disable Notifications</btn>
     </div>
+    </main>
     <div class="overlay">
       <p>Enabled ✅</p>
     </div>
