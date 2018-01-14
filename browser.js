@@ -10,21 +10,14 @@ let notifications = {
   mentions : true
 }
 
+// UI ACTIONS
+
 $(document).ready(()=> {
   $('.intro-pane__inner').removeClass('animation-start')
   $('.intro-pane__username').focus()
 })
-$('.active-btn').on('click', () => {
-  if ($('.username-input').val() === '') return false
-  enableNotifications(notifications)
-})
-$('.de-active-btn').on('click', () => {
-  disableNotifications()
-})
 
 $('.check-box').on('click', (e) => {
-  // ipcRenderer.send('enable-notifications', {username: 'sambillingham'})
-
 
   let currentCheckBox = $(e.currentTarget)
   let checkData = currentCheckBox.parent().data('notification')
@@ -58,35 +51,18 @@ ipcRenderer.on('user-data', (event, data) => {
   $('.notifactions__user-image').attr('src', data.image)
 })
 
-function enableNotifications(notifications){
+// FUNCTIIONS
+
+function updateNotifications(notifications){
   let username = $('.intro-pane__username').val();
   let data = {
     notifications: notifications,
     username : username
   }
+  console.log('update notifications')
   ipcRenderer.send('enable-notifications', data)
-  // showOverlay('Enabled ✅');
-  // switchButtons();
-}
-function disableNotifications(){
-  ipcRenderer.send('disable-notifications')
-  // switchButtons()
-  // showOverlay('Disabled ❌')
 }
 
-// function showOverlay(message, action){
-//   $('.overlay p').text(message)
-//   $('.overlay').addClass('active')
-//   setTimeout(()=>{
-//     $('.overlay').removeClass('active')
-//   }, 2000)
-// }
-// function switchButtons(){
-//   if( $('.active-btn').is(":visible") ) {
-//     $('.active-btn').hide()
-//     $('.de-active-btn').show()
-//   } else {
-//     $('.de-active-btn').hide()
-//     $('.active-btn').show()
-//   }
-// }
+function disableNotifications(){
+  ipcRenderer.send('disable-notifications')
+}
