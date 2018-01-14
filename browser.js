@@ -29,6 +29,7 @@ $('.check-box').on('click', (e) => {
     currentCheckBox.addClass('checked')
     notifications[checkData] = true;
   }
+  updateNotifications(notifications)
 })
 
 
@@ -37,10 +38,11 @@ $('.intro-pane__username').keypress(function(e) {
     if(e.which == 13 && val != '' ) {
       $('.intro-pane').fadeOut(750)
       $('.animation-hidden').removeClass('animation-hidden')
-      enableNotifications(notifications)
+      updateNotifications(notifications)
     }
 });
 
+// EVENTS
 
 ipcRenderer.on('user-data', (event, data) => {
   console.log(data)

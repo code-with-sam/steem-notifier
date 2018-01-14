@@ -22,6 +22,12 @@ ipcMain.on('enable-notifications', (event, data) => {
   getUserInfo(data.username)
     .then(data => event.sender.send('user-data', data))
 
+    try {
+      stopStream();
+    }
+    catch(err) {
+      console.log('Stream is already disabled ')
+    }
     startStream(data.username, data.notifications)
 })
 
@@ -177,6 +183,7 @@ function stopStream(){
           })
       })
   });
+  console.log('stream Started')
 }
 
 function sendNotification(data) {
