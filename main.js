@@ -36,6 +36,11 @@ ipcMain.on('disable-notifications', (event, data) => {
   stopStream()
 })
 
+ipcMain.on('request-vote-power', (event, data) => {
+  event.sender.send('vote-power', votePower)
+})
+
+
 
 let tray;
 let appView = null;
@@ -329,7 +334,7 @@ function getVotePower(username){
 }
 
 function startVotePowerPolling(username, enable){
-  let pollTimer = 5 * 1000;
+  let pollTimer = 30 * 1000;
   votePowerPolling = setInterval(() => {
 
     getVotePower(username)

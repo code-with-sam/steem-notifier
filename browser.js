@@ -48,6 +48,12 @@ $('.intro-pane__username').keypress(function(e) {
 });
 
 // EVENTS
+ipcRenderer.send('request-vote-power')
+setInterval(()=> {
+  ipcRenderer.send('request-vote-power')
+}, 3000)
+// UI ACTIONS
+
 
 ipcRenderer.on('user-data', (event, data) => {
   console.log(data)
@@ -58,6 +64,12 @@ ipcRenderer.on('user-data', (event, data) => {
   $('.notifactions__user-image').attr('src', data.image)
 })
 
+
+ipcRenderer.on('vote-power', (event, data) => {
+  console.log(data);
+
+
+})
 // FUNCTIIONS
 
 function updateNotifications(notifications){
