@@ -119,6 +119,7 @@ function stopStream(){
       steem.api.getOpsInBlock(blockNum, false, (err, operations) =>{
           operations.forEach( (tx, i, arr) => {
 
+            let json, jsonType, jsonContent;
             let transaction = tx.op[0]
 
             if(transaction == 'comment') {
@@ -126,6 +127,20 @@ function stopStream(){
               let mentionUsername = '@'+USERNAME;
               let includesMention = commentBody.includes(mentionUsername);
               transaction = includesMention ? 'mention' : 'comment'
+            }
+
+            if(transaction == 'custom_json') {
+
+              json = JSON.parse(tx.op[1].json)
+              jsonType =  json[0]
+              jsonContent = json[1]
+
+              if ( jsonType == 'follow' ){
+                transaction = 'follow'
+              }
+              if ( jsonType == 'reblog' ){
+                transaction = 'reblog'
+              }
             }
 
             switch(true){
@@ -178,6 +193,20 @@ function stopStream(){
                     link : `https://steemit.com/@${tx.op[1].author }/${tx.op[1].permlink}/`
                   })
               break;
+              case (enable.follows == true && transaction == 'follow' && jsonContent.following == USERNAME ):
+                  sendNotification({
+                    nType: 'follow',
+                    from: jsonContent.follower,
+                    link : `https://steemit.com/@${jsonContent.follower}`
+                  })
+              break;
+              case (enable.reblogs == true && transaction == 'reblog' && jsonContent.author == USERNAME ):
+                  sendNotification({
+                    nType: 'follow',
+                    from: jsonContent.account,
+                    link : `https://steemit.com/@${jsonContent.account}`
+                  })
+              break;
               default:
               }
           })
@@ -206,6 +235,12 @@ function sendNotification(data) {
     break;
     case 'Comment Reward':
       message = `Comment Reward: ${data.sbd}`
+    break;
+    case 'follow':
+      message = `${data.from}: just followed you `
+    break;
+    case 'reblog':
+      message = `${data.from}: Re-Steemed your content`
     break;
     default:
     message = `New notification`

@@ -7,7 +7,11 @@ let notifications = {
   transfers : true,
   authorRewards : true,
   commentRewards : true,
-  mentions : true
+  mentions : true,
+  follows : true,
+  reblogs : true,
+  votePower90 : true,
+  votePower100 : true
 }
 
 // UI ACTIONS
