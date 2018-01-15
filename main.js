@@ -206,7 +206,7 @@ function stopStream(){
               case (enable.mentions == true && transaction == 'mention'):
                   sendNotification({
                     nType: 'mention',
-                    from: tx.op[1].parent_author,
+                    from: tx.op[1].author,
                     link : `https://steemit.com/@${tx.op[1].author }/${tx.op[1].permlink}/`
                   })
               break;
@@ -245,7 +245,7 @@ function sendNotification(data) {
       message = `${data.from} : voted ${data.weight/100}%`
     break;
     case 'mention':
-      message = `${data.from} mentioned you...`
+      message = `${data.from}: mentioned you...`
     break;
     case 'Author Reward':
       message = `Author Reward: ${data.sbd}`

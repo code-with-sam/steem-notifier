@@ -170,7 +170,7 @@
       .notifications__user-profile {
         float: left;
         padding: 20px 0 20px 10px;
-
+        position: relative;
       }
       .notifications__user-inner {
         float: left;
@@ -199,8 +199,28 @@
       .notifactions__user-image {
 
         border-radius: 50%;
-        border: solid 3px rgba(112,146,243,0.12);
+        border: solid 5px rgba(112,146,243,0);
         width: 70px;
+      }
+      .vote-ring-container {
+        position: absolute;
+        transform: rotate(90deg)
+      }
+      .vote-ring {
+        stroke: rgba(130, 186, 255, 0.7);
+        transition: all 4500ms;
+        opacity: 0.1;
+        transition-delay: 5000ms;
+        stroke-dasharray: 200;
+        stroke-dashoffset: 200;
+      }
+      .vote-power {
+        position: absolute;
+        left: 50%;
+        font-size: 13px;
+        transform: translateX(-50%);
+        padding-left: 22px;
+        font-weight: 400;
       }
       hr {
           margin: 5px auto;
@@ -230,7 +250,12 @@
     <section class="notifications   ">
       <div class="notifactions__user animation-hidden cf">
         <div class="notifications__user-profile">
+          <svg class="vote-ring-container" version="1.1" x="0px" y="0px" viewBox="0 0 70 70">
+          <circle stroke-dashoffset="0" stroke-dasharray="0"  class="vote-ring" fill="transparent" stroke="#000000" stroke-miterlimit="10" stroke-width="4" cx="35" cy="35" r="31.8"/>
+          </svg>
+
           <img class="notifactions__user-image" src="http://placehold.it/100x100">
+          <span class="vote-power"></span>
         </div>
         <div class="notifications__user-inner">
           <h2 class="notifactions__user-name">- - - - - - -</h2>

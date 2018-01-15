@@ -49,9 +49,10 @@ $('.intro-pane__username').keypress(function(e) {
 
 // EVENTS
 ipcRenderer.send('request-vote-power')
+
 setInterval(()=> {
   ipcRenderer.send('request-vote-power')
-}, 3000)
+}, 30000)
 // UI ACTIONS
 
 
@@ -67,6 +68,15 @@ ipcRenderer.on('user-data', (event, data) => {
 
 ipcRenderer.on('vote-power', (event, data) => {
   console.log(data);
+
+  if (data){
+
+      $('.vote-power').text(data.toFixed(2) + '%')
+
+      document.querySelector('.vote-ring').style.strokeDashoffset = 200 - data*2
+      document.querySelector('.vote-ring').style.opacity = 1
+  }
+
 
 
 })
