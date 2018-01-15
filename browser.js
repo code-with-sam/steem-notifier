@@ -15,7 +15,6 @@ let notifications = {
   votePower100 : true
 }
 
-// UI ACTIONS
 
 $(document).ready(()=> {
   $('.intro-pane__inner').removeClass('animation-start')

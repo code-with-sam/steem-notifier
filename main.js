@@ -89,7 +89,7 @@ function createWindow() {
     height: 300,
     frame: true,
     show: false,
-    // resizable: false,
+    resizable: false,
     x: trayPosition.x - 125,
     y: yPos
   })
@@ -249,16 +249,16 @@ function sendNotification(data) {
   let message;
   switch(data.nType){
     case 'comment':
-      message = `${data.author} : ${data.body.substring(0,20)}...`
+      message = `@${data.author} : ${data.body.substring(0,20)}...`
     break;
     case 'transfer':
-      message = `${data.from} : Sent you ${data.amount}`
+      message = `@${data.from} : Sent you ${data.amount}`
     break;
     case 'vote':
-      message = `${data.from} : voted ${data.weight/100}%`
+      message = `@${data.from} : voted ${data.weight/100}%`
     break;
     case 'mention':
-      message = `${data.from}: mentioned you...`
+      message = `@${data.from}: mentioned you...`
     break;
     case 'Author Reward':
       message = `Author Reward: ${data.sbd}`
@@ -270,7 +270,7 @@ function sendNotification(data) {
       message = `Curation Reward: ${data.sbd}`
     break;
     case 'follow':
-      message = `${data.from}: just followed you `
+      message = `@${data.from}: just followed you `
     break;
     case 'reblog':
       message = `${data.from}: Re-Steemed your content`
@@ -337,7 +337,6 @@ function getVotePower(username){
       steem.api.getAccounts([username], (err, result) => {
           let user  = result[0]
 
-          // vote power calc
           let lastVoteTime = (new Date - new Date(user.last_vote_time + "Z")) / 1000;
           let votePower = user.voting_power += (10000 * lastVoteTime / 432000);
           votePower = Math.min(votePower / 100, 100)
@@ -373,14 +372,8 @@ function startVotePowerPolling(username, enable){
   }, pollTimer)
   console.log('Vote Power Polling Started')
 }
+
 function stopVotePowerPolling(){
   clearInterval(votePowerPolling);
   console.log('Vote Power Polling Stopped')
-
 }
-
-// function getGlobalProps(server){
-//   return steem.api.getDynamicGlobalProperties((err, result) => {
-//     totalVestingShares = result.total_vesting_shares;
-//     totalVestingFundSteem = result.total_vesting_fund_steem;
-// })
