@@ -229,6 +229,34 @@
           width: calc(100% - 20px);
 
       }
+
+      .active-icon {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        height: 12px;
+        width: 12px;
+        border-radius: 50%;
+        background-color: #8cd6a6;
+        animation: blink 3200ms infinite;
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 0;
+          transform: scale(1.1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(0.75);
+        }
+      100% {
+          opacity: 0;
+          transform: scale(1.1);
+        }
+      }
+
+
     </style>
   </head>
   <body>
@@ -283,6 +311,7 @@
           <li data-notification="votePower90">vote power 90%<span class="check-box checked"></span></li>
           <li data-notification="votePower100">vote power 100%<span class="check-box checked"></span></li>
         </ul>
+        <i class="active-icon"></i>
       </div>
 
     </section>
