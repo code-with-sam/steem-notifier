@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>steem-notifier</title>
+    <title>Steem Notifier</title>
     <style>
       * {
         box-sizing: border-box;
@@ -10,52 +10,106 @@
       body {
         font-family: Inconsolata, 'Courier New', Courier, monospace;
         margin: 0;
-        padding: 10px;
-        background-color: #fafafa;
+        background-color: #f9f9f9;
+        max-height: 300px;
       }
-      h1 {
-        font-size: 14px;
-        margin: 8px 0 15px 45px;
-        color: #333;
+      .cf {
+        overflow: auto;
+        zoom: 1;
       }
-      img {
-        position: absolute;
-        top: 5px;
-        left: 5px;
-      }
+
       p {
         font-size: 14px;
         color: #333;
-      }
-      ul {
-          display: block;
-          padding: 0;
       }
       li {
         padding: 2px 0;
         list-style: none;
         margin: 5px 0;
         position: relative;
-        border-bottom: dotted 1px #333;
+        border-bottom: dotted 1px #ddd;
+        font-size: 0.77rem;
+      }
+      li:last-of-type {
+        border-bottom: none;
       }
       .check-box {
-        height: 17px;
-        width: 17px;
+        height: 14px;
+        width: 14px;
         border-radius: 2px;
-        border: solid 0.16rem #333;
+        border: solid 0.12rem #bbb;
         position: absolute;
         right: 0;
-        top: 8px;
+        top: 7px;
         transform: translateY(-50%);
         cursor: pointer;
       }
       .check-box.checked {
-        background-color: #333;
+        background-color: #bbb;
       }
-      input {
+
+      span {
+        float: left;
+        font-weight: 700;
+        padding-right: 5px;
+        font-size: 19px;
+      }
+
+
+
+      .intro-pane {
+        position: fixed;
+        height: 100vh;
+        width: 100vw;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(245,245,245,0.90);
+        padding: 15vh 15vw;
+        z-index: 1;
+      }
+      .intro-pane__inner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 70%;
+        text-align: center;
+        background-color: #fff;
+        border: #fdfdfd solid 1px;
+        box-shadow: 0 0 38px rgba(30,30,30,0.23);
+        border-radius: 4px;
+        padding: 15px 30px;
+
+        transition: all 600ms;
+        transform: translate(-50%, -50%);
+        opacity: 1;
+      }
+      .animation-start {
+        transform: translate(-50%, -45%);
+        opacity: 0;
+      }
+      .intro-pane__header {
+        line-height: 50px;
+      }
+      .intro-pane__logo {
+        display: inline-block;
+        vertical-align: middle;
+
+      }
+      .intro-pane__title {
+        display: inline-block;
+        font-size: 16px;
+        color: #333;
+        vertical-align: middle;
+        margin: 4px 0 0;
+
+      }
+      .intro-pane__username {
         border: solid 1px #333;
         padding: 3px;
-        width: calc(100% + 2px);
+        width: calc(100% - 24px);
         padding: 3px 5px 3px 8px;
         margin: 5px -1px;
         border-radius: 2px;
@@ -64,89 +118,202 @@
         font-family: Inconsolata, 'Courier New', Courier, monospace;
         outline: none;
       }
-      button {
-        float: left;
-        border: solid 1px #333;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        font-weight: bold;
-        background: #333;
-        color: #fff;
-        width: 100%;
-        padding: 10px 0;
-        margin: 5px 0;
-        border-radius: 3px;
-        cursor: pointer;
-      }
-      button:focus {outline:0;}
-      span {
-        float: left;
-        font-weight: 700;
-        padding-right: 5px;
-        font-size: 19px;
-      }
-      img {
-        float: right;
-      }
-      .de-active-btn {
-        display: none;
-        background-color: #d67070;
-        border-color: #d67070;
-      }
-      .overlay {
-        position: absolute;
-        top: -145px;
-        right: 5px;
-        background: #acdc9c;
-        border-radius: 3px;
-        opacity: 0.5;
-        transform: translateY(0px);
-        transition: all 700ms;
-        background: #333;
+      .intro-pane__at {
+        display: inline-block;
+        font-size: 28px;
+        line-height: 33px;
+        margin-top: 5px;
       }
 
-      .overlay p {
-        text-align: center;
-        padding: 4px 11px 6px 9px;
-        margin: 0;
-        color: #fff;
-        text-transform: uppercase;
-        letter-spacing: 0.02rem;
+
+      .notifactions__user {
+        width: 95%;
+        margin: 10px auto;
+        box-shadow: 0 0 40px rgba(0,0,0,0.1);
+        background-color: #fff;
+        border-radius: 5px;
+        padding: 5px 15px 5px;
+        transition: all 600ms;
+        transition-delay: 400ms;
+        transform: translateY(0px);
+        opacity: 1;
       }
-      .overlay.active {
-        transform: translateY(150px);
-        opacity: 0.97;
+
+      .notifications__select {
+        width: 95%;
+        margin: 10px auto;
+        box-shadow: 0 0 40px rgba(0,0,0,0.1);
+        background-color: #fff;
+        border-radius: 5px;
+        transition: all 600ms;
+        transition-delay: 600ms;
+        transform: translateY(0px);
+        opacity: 1;
+      }
+      .animation-hidden {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+
+      .notifications__select ul {
+        width: 35.5%;
+        float: left;
+        padding: 10px 12px 10px;
+        margin: 0;
+      }
+      .notifications__select ul:first-of-type {
+        width: 29%;
+      }
+      .notifications__user-profile {
+        float: left;
+        padding: 20px 0 20px 10px;
+        position: relative;
+      }
+      .notifications__user-inner {
+        float: left;
+        padding-left: 30px;
+        margin-top: 20px;
+      }
+      .notifactions__user-name {
+        font-size: 15px;
+        line-height: 1;
+      }
+      .notifactions__user-name,
+      .notifactions__user-bio,
+      .notifactions__user-stats,
+      .notifactions__user-value {
+        line-height: 0.8;
+        margin: 0 0 10px 0;
+      }
+      .notifactions__user-stats {
+        margin-top: 20px;
+      }
+      .notifactions__user-stats,
+      .notifactions__user-value {
+        font-size: 11px;
+      }
+
+      .notifactions__user-image {
+
+        border-radius: 50%;
+        border: solid 5px rgba(112,146,243,0);
+        width: 70px;
+      }
+      .vote-ring-container {
+        position: absolute;
+        transform: rotate(90deg)
+      }
+      .vote-ring {
+        stroke: rgba(130, 186, 255, 0.7);
+        transition: all 4500ms;
+        opacity: 0.1;
+        transition-delay: 3000ms;
+        stroke-dasharray: 200;
+        stroke-dashoffset: 200;
+      }
+      .vote-power {
+        position: absolute;
+        left: 50%;
+        font-size: 13px;
+        transform: translateX(-50%);
+        padding-left: 22px;
+        font-weight: 400;
+      }
+      hr {
+          margin: 5px auto;
+          border: none;
+          border-bottom: solid 1px #e8e8e8;
+          width: calc(100% - 20px);
+
+      }
+
+      .active-icon {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        height: 12px;
+        width: 12px;
+        border-radius: 50%;
+        background-color: #8cd6a6;
+        animation: blink 3200ms infinite;
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 0;
+          transform: scale(1.1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(0.75);
+        }
+      100% {
+          opacity: 0;
+          transform: scale(1.1);
+        }
       }
     </style>
   </head>
   <body>
-    <header>
-      <img src="steem-icon@2x.png">
-      <h1>steem-notifier V0.2.0</h1>
-    </header>
+
     <main>
-      <div class="">
-        <!-- <span>@</span> -->
-        <input class="username-input" type="text" placeholder="username"></input>
+      <section class="intro-pane">
+          <div class="intro-pane__inner animation-start">
+            <div class="intro-pane__header">
+                <img class="intro-pane__logo" src="steem-icon@2x.png">
+                <h1 class="intro-pane__title">Steem Notifier</h1>
+            </div>
+            <div class="intro-pane__information">
+              <span class="intro-pane__at">@</span>
+              <input class="intro-pane__username" type="text" placeholder="username"></input>
+            </div>
+          </div>
+      </section>
+
+    <section class="notifications   ">
+      <div class="notifactions__user animation-hidden cf">
+        <div class="notifications__user-profile">
+          <svg class="vote-ring-container" version="1.1" x="0px" y="0px" viewBox="0 0 70 70">
+          <circle stroke-dashoffset="0" stroke-dasharray="0"  class="vote-ring" fill="transparent" stroke="#000000" stroke-miterlimit="10" stroke-width="4" cx="35" cy="35" r="31.8"/>
+          </svg>
+
+          <img class="notifactions__user-image" src="http://placehold.it/100x100">
+          <span class="vote-power"></span>
+        </div>
+        <div class="notifications__user-inner">
+          <h2 class="notifactions__user-name">- - - - - - -</h2>
+          <p class="notifactions__user-bio">Coder | Developer | Photographer</p>
+          <p class="notifactions__user-stats"> Following | Followers | Posts </p>
+          <p class="notifactions__user-value">Account Value: </p>
+
+        </div>
       </div>
+      <!-- <hr> -->
+      <div class="notifications__select animation-hidden  cf">
+        <ul>
+          <li data-notification="votes">votes <span class="check-box "></span></li>
+          <li data-notification="mentions">mentions<span class="check-box checked"></span></li>
+          <li data-notification="comments">comments <span class="check-box checked"></span></li>
+          <li data-notification="transfers">transfers<span class="check-box checked"></span></li>
+        </ul>
+        <ul>
+          <li data-notification="authorRewards">author rewards<span class="check-box checked"></span></li>
+          <li data-notification="commentRewards">comment rewards<span class="check-box checked"></span></li>
+          <li data-notification="curationReward">curation rewards<span class="check-box checked"></span></li>
+          <li data-notification="follows">new follower<span class="check-box checked"></span></li>
+        </ul>
+        <ul>
+          <li data-notification="reblogs">re-steems<span class="check-box checked"></span></li>
+          <li data-notification="votePower90">vote power 90%<span class="check-box checked"></span></li>
+          <li data-notification="votePower100">vote power 100%<span class="check-box checked"></span></li>
+        </ul>
+        <i class="active-icon"></i>
+      </div>
+
+    </section>
+
     </main>
-    <div class="options">
-      <ul>
-        <li data-notification="votes">Votes <span class="check-box "></span></li>
-        <li data-notification="mentions">Mentions<span class="check-box checked"></span></li>
-        <li data-notification="comments">Comments <span class="check-box checked"></span></li>
-        <li data-notification="transfers">Transfers<span class="check-box checked"></span></li>
-        <li data-notification="authorRewards">Author Rewards<span class="check-box checked"></span></li>
-        <li data-notification="commentRewards">Comment rewards<span class="check-box checked"></span></li>
-      </ul>
-    </div>
-    <div class="">
-      <button class="active-btn">Enable Notifications</btn>
-      <button class="de-active-btn">Disable Notifications</btn>
-    </div>
-    <div class="overlay">
-      <p>Enabled ✅</p>
-    </div>
+
     <script>
       // You can also require other files to run in this process
       require('./browser.js')

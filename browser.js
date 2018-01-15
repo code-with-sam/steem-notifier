@@ -7,18 +7,22 @@ let notifications = {
   transfers : true,
   authorRewards : true,
   commentRewards : true,
-  mentions : true
+  curationRewards: true,
+  mentions : true,
+  follows : true,
+  reblogs : true,
+  votePower90 : true,
+  votePower100 : true
 }
 
-$('.active-btn').on('click', () => {
-  if ($('.username-input').val() === '') return false
-  enableNotifications(notifications)
-})
-$('.de-active-btn').on('click', () => {
-  disableNotifications()
+
+$(document).ready(()=> {
+  $('.intro-pane__inner').removeClass('animation-start')
+  $('.intro-pane__username').focus()
 })
 
 $('.check-box').on('click', (e) => {
+
   let currentCheckBox = $(e.currentTarget)
   let checkData = currentCheckBox.parent().data('notification')
   let isChecked = currentCheckBox.hasClass('checked');
@@ -29,37 +33,62 @@ $('.check-box').on('click', (e) => {
     currentCheckBox.addClass('checked')
     notifications[checkData] = true;
   }
+  updateNotifications(notifications)
 })
 
-function enableNotifications(notifications){
-  let username = $('.username-input').val();
+
+$('.intro-pane__username').keypress(function(e) {
+    let val = $('.intro-pane__username').val()
+    if(e.which == 13 && val != '' ) {
+      $('.intro-pane').fadeOut(750)
+      $('.animation-hidden').removeClass('animation-hidden')
+      updateNotifications(notifications)
+    }
+});
+
+// EVENTS
+setInterval(()=> {
+  ipcRenderer.send('request-vote-power')
+}, 1500)
+// UI ACTIONS
+
+
+ipcRenderer.on('user-data', (event, data) => {
+  console.log(data)
+  $('.notifactions__user-name').text(data.name)
+  $('.notifactions__user-bio').text(data.bio)
+  $('.notifactions__user-stats').text(`Following: ${data.followingCount} | Followers: ${data.followerCount} | Posts: ${data.numOfPosts}`)
+  $('.notifactions__user-value').text(`Account Value: $${data.usdValue}`)
+  $('.notifactions__user-image').attr('src', data.image)
+})
+
+
+ipcRenderer.on('vote-power', (event, data) => {
+  console.log(data);
+
+  if (data){
+
+      $('.vote-power').text(data.toFixed(2) + '%')
+
+      document.querySelector('.vote-ring').style.strokeDashoffset = 200 - data*2
+      document.querySelector('.vote-ring').style.opacity = 1
+  }
+
+
+
+})
+// FUNCTIIONS
+
+function updateNotifications(notifications){
+  let username = $('.intro-pane__username').val();
   let data = {
     notifications: notifications,
     username : username
   }
+  console.log('update notifications')
   ipcRenderer.send('enable-notifications', data)
-  showOverlay('Enabled ✅');
-  switchButtons();
-}
-function disableNotifications(){
-  ipcRenderer.send('disable-notifications')
-  switchButtons()
-  showOverlay('Disabled ❌')
 }
 
-function showOverlay(message, action){
-  $('.overlay p').text(message)
-  $('.overlay').addClass('active')
-  setTimeout(()=>{
-    $('.overlay').removeClass('active')
-  }, 2000)
-}
-function switchButtons(){
-  if( $('.active-btn').is(":visible") ) {
-    $('.active-btn').hide()
-    $('.de-active-btn').show()
-  } else {
-    $('.de-active-btn').hide()
-    $('.active-btn').show()
-  }
+function disableNotifications(){
+  ipcRenderer.send('disable-notifications')
 }
