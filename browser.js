@@ -7,6 +7,7 @@ let notifications = {
   transfers : true,
   authorRewards : true,
   commentRewards : true,
+  curationRewards: true,
   mentions : true,
   follows : true,
   reblogs : true,

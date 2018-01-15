@@ -177,9 +177,18 @@ function stopStream(){
                     link : `https://steemit.com/@${tx.op[1].author }/${tx.op[1].permlink}/`
                   })
               break;
-              case (enable.CommentRewards == true && transaction == 'comment_reward' && tx.op[1].author == USERNAME ):
+              case (enable.commentRewards == true && transaction == 'comment_reward' && tx.op[1].author == USERNAME ):
                   sendNotification({
                     nType: 'Comment Reward',
+                    sbd:  tx.op[1].sbd_payout,
+                    vests: tx.op[1].vesting_payout,
+                    steem: tx.op[1].steem_payout,
+                    link : `https://steemit.com/@${tx.op[1].author }/${tx.op[1].permlink}/`
+                  })
+              break;
+              case (enable.curationRewards == true && transaction == 'curation_reward' && tx.op[1].author == USERNAME ):
+                  sendNotification({
+                    nType: 'Curation Reward',
                     sbd:  tx.op[1].sbd_payout,
                     vests: tx.op[1].vesting_payout,
                     steem: tx.op[1].steem_payout,
@@ -235,6 +244,9 @@ function sendNotification(data) {
     break;
     case 'Comment Reward':
       message = `Comment Reward: ${data.sbd}`
+    break;
+    case 'Curation Reward':
+      message = `Curation Reward: ${data.sbd}`
     break;
     case 'follow':
       message = `${data.from}: just followed you `
