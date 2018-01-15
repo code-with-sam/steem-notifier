@@ -9,8 +9,10 @@ const steem = require('steem');
 const notification = require('./lib/node-notifier/index.js');
 const open = require("open");
 
-let stream;
-let dataStoreForSleep;
+let stream,
+    dataStoreForSleep,
+    votePower,
+    votePowerPolling;
 
 steem.api.setOptions({ url: 'wss://rpc.buildteam.io' });
 
@@ -22,13 +24,12 @@ ipcMain.on('enable-notifications', (event, data) => {
   getUserInfo(data.username)
     .then(data => event.sender.send('user-data', data))
 
-    try {
-      stopStream();
-    }
-    catch(err) {
-      console.log('Stream is already disabled ')
-    }
+    try { stopStream() }
+    catch(err) { console.log('Stream is already disabled ')}
+    try { stopVotePowerPolling() }
+    catch(err) { console.log('Vote Power Polling is already disabled ')}
     startStream(data.username, data.notifications)
+    startVotePowerPolling(data.username, data.notifications)
 })
 
 ipcMain.on('disable-notifications', (event, data) => {
@@ -56,10 +57,12 @@ function appReady() {
   electron.powerMonitor.on('suspend', () => {
     console.log('The system is going to sleep')
     stopStream()
+    stopVotePowerPolling()
   })
   electron.powerMonitor.on('resume', () => {
     console.log('The system is starting again')
     startStream(dataStoreForSleep.username, dataStoreForSleep.notifications)
+    startVotePowerPolling(data.username, data.notifications)
   })
 }
 
@@ -254,6 +257,9 @@ function sendNotification(data) {
     case 'reblog':
       message = `${data.from}: Re-Steemed your content`
     break;
+    case 'Vote Power':
+      message = `VotePower at ${data.from}%`
+    break;
     default:
     message = `New notification`
 
@@ -272,6 +278,7 @@ function sendNotification(data) {
    notification.on('click', function (notifierObject, options) {
      open(data.link)
    });
+
 }
 
 
@@ -307,10 +314,52 @@ function getUserInfo(username){
   });
 }
 
+function getVotePower(username){
+  return new Promise( (resolve, reject) => {
+      steem.api.getAccounts([username], (err, result) => {
+          let user  = result[0]
 
+          // vote power calc
+          let lastVoteTime = (new Date - new Date(user.last_vote_time + "Z")) / 1000;
+          let votePower = user.voting_power += (10000 * lastVoteTime / 432000);
+          votePower = Math.min(votePower / 100, 100)
+          resolve(votePower)
+      })
+  })
+}
 
+function startVotePowerPolling(username, enable){
+  let pollTimer = 5 * 1000;
+  votePowerPolling = setInterval(() => {
 
+    getVotePower(username)
+      .then(data => {
+          if (votePower != undefined){
+            if ( data >= 90 && votePower < 90 && enable.votePower90 == true){
+              sendNotification({
+                nType: 'Vote Power',
+                from: '90%',
+                link : `https://steemit.com/@${username}`
+              })
+            } else if ( data >= 100 && votePower < 100 && enable.votePower100 == true){
+              sendNotification({
+                nType: 'Vote Power',
+                from: '100%',
+                link : `https://steemit.com/@${username}`
+              })
+            }
+          }
+          votePower = data;
+      })
 
+  }, pollTimer)
+  console.log('Vote Power Polling Started')
+}
+function stopVotePowerPolling(){
+  clearInterval(votePowerPolling);
+  console.log('Vote Power Polling Stopped')
+
+}
 
 // function getGlobalProps(server){
 //   return steem.api.getDynamicGlobalProperties((err, result) => {
