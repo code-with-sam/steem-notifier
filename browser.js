@@ -48,13 +48,9 @@ $('.intro-pane__username').keypress(function(e) {
 });
 
 // EVENTS
-setTimeout(()=> {
-  ipcRenderer.send('request-vote-power')
-}, 3000)
-
 setInterval(()=> {
   ipcRenderer.send('request-vote-power')
-}, 30000)
+}, 1500)
 // UI ACTIONS
 
 

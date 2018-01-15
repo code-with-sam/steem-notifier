@@ -24,6 +24,10 @@ ipcMain.on('enable-notifications', (event, data) => {
   getUserInfo(data.username)
     .then(data => event.sender.send('user-data', data))
 
+  getVotePower(data.username).then(data => {
+    votePower = data;
+  })
+
     try { stopStream() }
     catch(err) { console.log('Stream is already disabled ')}
     try { stopVotePowerPolling() }
