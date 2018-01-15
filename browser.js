@@ -48,7 +48,9 @@ $('.intro-pane__username').keypress(function(e) {
 });
 
 // EVENTS
-ipcRenderer.send('request-vote-power')
+setTimeout(()=> {
+  ipcRenderer.send('request-vote-power')
+}, 3000)
 
 setInterval(()=> {
   ipcRenderer.send('request-vote-power')
