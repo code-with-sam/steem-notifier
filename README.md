@@ -1,4 +1,4 @@
-# steem-notifier v 0.3.0
+# steem-notifier v 0.3.1
 
 > Steem Notifier is a minimal taskbar application that send notifications about your [Steem account](http://steemit.com) through your native operating systems notification interface.
 

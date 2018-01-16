@@ -71,7 +71,7 @@ function appReady() {
   electron.powerMonitor.on('resume', () => {
     console.log('The system is starting again')
     startStream(dataStoreForSleep.username, dataStoreForSleep.notifications)
-    startVotePowerPolling(data.username, data.notifications)
+    startVotePowerPolling(dataStoreForSleep.username, dataStoreForSleep.notifications)
   })
 }
 
