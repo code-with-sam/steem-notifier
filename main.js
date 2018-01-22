@@ -13,7 +13,7 @@ let stream,
     votePowerPolling,
     sender
 
-steem.api.setOptions({ url: 'wss://rpc.buildteam.io' });
+steem.api.setOptions({ url: 'https://api.steemit.com' });
 
 
 ipcMain.on('enable-notifications', (event, data) => {
@@ -82,8 +82,12 @@ function appReady() {
   })
   electron.powerMonitor.on('resume', () => {
     console.log('The system is starting again')
-    startStream(dataStoreForSleep.username, dataStoreForSleep.notifications)
-    startVotePowerPolling(dataStoreForSleep.username, dataStoreForSleep.notifications)
+
+    setTimeout( ()=> {
+      console.log(dataStoreForSleep.username, dataStoreForSleep.notifications)
+      startStream(dataStoreForSleep.username, dataStoreForSleep.notifications)
+      startVotePowerPolling(dataStoreForSleep.username, dataStoreForSleep.notifications)
+    }, 10000)
   })
 }
 
@@ -143,7 +147,8 @@ function stopStream(){
 }
 
   function startStream(USERNAME, enable){
-
+    
+  steem.api.setOptions({ url: 'https://api.steemit.com' });
   stream = steem.api.streamBlockNumber((err, blockNum) => {
       steem.api.getOpsInBlock(blockNum, false, (err, operations) =>{
           operations.forEach( (tx, i, arr) => {
