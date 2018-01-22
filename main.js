@@ -1,12 +1,10 @@
 const electron = require('electron')
-const {app, Menu, Tray, BrowserWindow, Screen, ipcMain } = electron
+const {app, Menu, Tray, BrowserWindow, Screen, ipcMain, Notification, nativeImage} = electron
 
 const path = require('path')
 const url = require('url')
 
 const steem = require('steem');
-// custom node notifier
-const notification = require('./lib/node-notifier/index.js');
 const open = require("open");
 
 let stream,
@@ -276,27 +274,20 @@ function sendNotification(data) {
       message = `${data.from}: Re-Steemed your content`
     break;
     case 'Vote Power':
-      message = `VotePower at ${data.from}%`
+      message = `VotePower at ${data.from}`
     break;
     default:
     message = `New notification`
 
   }
 
-  notification.notify({
-      title: `New Steem ${data.nType}!`,
-      message: message,
-      closeLabel: 'Close',
-      timeout: 20,
-      icon: data.icon || './steem-icon-large.png',
-      actions: 'View',
-      open: data.link
-   });
-
-   notification.on('click', function (notifierObject, options) {
-     open(data.link)
-   });
-
+  let notification =  new Notification({
+    title: `New Steem ${data.nType}!`,
+    body:  message,
+    silent: true,
+    icon: data.icon || path.join(__dirname, 'steem-icon@2x.png'),
+  })
+  notification.show()
 }
 
 
