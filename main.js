@@ -58,6 +58,8 @@ function appReady() {
     tray = new Tray(trayIcon)
     tray.setToolTip('Steem Notifier')
     const contextMenu = Menu.buildFromTemplate([
+        {label: 'Clear Default User', click () { clearDefaultUser() }},
+        {type: 'separator'},
         {label: 'Quit', click () { app.quit() }}
     ])
 
@@ -129,6 +131,10 @@ app.on('window-all-closed', function () {
   }
 })
 
+function clearDefaultUser(){
+  if( sender !== undefined)
+    sender.send('clear-default-user')
+}
 function stopStream(){
   if (typeof stream !== undefined) {
     stream()

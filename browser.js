@@ -16,9 +16,21 @@ let notifications = {
 }
 
 
+
 $(document).ready(()=> {
-  $('.intro-pane__inner').removeClass('animation-start')
-  $('.intro-pane__username').focus()
+  let defaultUser = localStorage.getItem('default-username');
+
+  console.log('default user: ', defaultUser)
+
+  if(defaultUser !== 'false'){
+    $('.intro-pane').fadeOut(500)
+    $('.animation-hidden').removeClass('animation-hidden')
+    $('.intro-pane__username').val(defaultUser)
+    updateNotifications(notifications)
+  } else {
+    $('.intro-pane__inner').removeClass('animation-start')
+    $('.intro-pane__username').focus()
+  }
 })
 
 $('.check-box').on('click', (e) => {
@@ -36,6 +48,16 @@ $('.check-box').on('click', (e) => {
   updateNotifications(notifications)
 })
 
+$('.check-box--intro').on('click', (e) => {
+  let currentCheckBox = $(e.currentTarget)
+  let isChecked = currentCheckBox.hasClass('checked--intro');
+  if( isChecked ) {
+    currentCheckBox.removeClass('checked--intro')
+  } else {
+    currentCheckBox.addClass('checked--intro')
+  }
+})
+
 
 $('.intro-pane__username').keypress(function(e) {
     let val = $('.intro-pane__username').val()
@@ -43,6 +65,10 @@ $('.intro-pane__username').keypress(function(e) {
       $('.intro-pane').fadeOut(750)
       $('.animation-hidden').removeClass('animation-hidden')
       updateNotifications(notifications)
+
+      if ( $('.check-box--intro').hasClass('checked--intro')){
+        setDefaultUser(val)
+      }
     }
 });
 
@@ -81,7 +107,15 @@ ipcRenderer.on('show-notification', (event, data) => {
   }
 
 })
+
+ipcRenderer.on('clear-default-user', (event, data) => {
+    localStorage.setItem('default-username', 'false');
+})
 // FUNCTIIONS
+
+function setDefaultUser(defaultUsername){
+  localStorage.setItem('default-username', defaultUsername);
+}
 
 function updateNotifications(notifications){
   let username = $('.intro-pane__username').val();

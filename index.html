@@ -124,6 +124,26 @@
         line-height: 33px;
         margin-top: 5px;
       }
+      .intro-pane__default {
+        position: relative;
+        text-align: center;
+      }
+      .intro-pane__default .check-box {
+
+      }
+      .check-box--intro {
+        float: none;
+        height: 14px;
+        width: 14px;
+        border-radius: 2px;
+        border: solid 0.12rem #bbb;
+        display: inline-block;
+        transform: translateY(3px);
+        cursor: pointer;
+      }
+      .check-box--intro.checked--intro {
+        background-color: #bbb;
+      }
 
 
       .notifactions__user {
@@ -146,7 +166,7 @@
         background-color: #fff;
         border-radius: 5px;
         transition: all 600ms;
-        transition-delay: 600ms;
+        transition-delay: 200ms;
         transform: translateY(0px);
         opacity: 1;
       }
@@ -267,6 +287,7 @@
               <span class="intro-pane__at">@</span>
               <input class="intro-pane__username" type="text" placeholder="username"></input>
             </div>
+            <p class="intro-pane__default"> Save as default user? <span class="check-box--intro checked--intro"></span></p>
           </div>
       </section>
 
