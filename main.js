@@ -51,8 +51,17 @@ function appReady() {
     if (app.dock)
       app.dock.hide()
 
-    tray = new Tray('./steem-icon.png')
-    tray.setToolTip('steem-notifier-v-0-1')
+    let trayIcon = path.join(__dirname, 'steem-icon.png')
+    tray = new Tray(trayIcon)
+    tray.setToolTip('Steem Notifier')
+    const contextMenu = Menu.buildFromTemplate([
+        {label: 'Quit', click () { app.quit() }}
+    ])
+
+    tray.on('right-click', () => {
+        tray.popUpContextMenu(contextMenu)
+    })
+
     tray.on('click', () => {
       if (appView === null){
         createWindow();
