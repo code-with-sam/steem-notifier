@@ -98,7 +98,8 @@ function createWindow() {
     show: false,
     resizable: false,
     x: trayPosition.x - 125,
-    y: yPos
+    y: yPos,
+    icon: path.join(__dirname, 'steem-icon.png')
   })
 
   appView.loadURL(url.format({
@@ -166,8 +167,8 @@ function stopStream(){
               case (enable.comments == true && transaction == 'comment' && tx.op[1].parent_author == USERNAME):
                   sendNotification({
                     nType: 'comment',
-                    icon: './img/comment-icon.png',
-                    author: tx.op[1].parent_author,
+                    icon: path.join(__dirname, '/img/comment-icon.png'),
+                    author: tx.op[1].author,
                     body : tx.op[1].body,
                     link : `https://steemit.com/@${tx.op[1].parent_author }/${tx.op[1].permlink}/`
                   })
@@ -175,7 +176,7 @@ function stopStream(){
               case (enable.transfers == true && transaction == 'transfer' && tx.op[1].to == USERNAME ):
                   sendNotification({
                     nType: 'transfer',
-                    icon: './img/transfer-icon.png',
+                    icon: path.join(__dirname, '/img/transfer-icon.png'),
                     from: tx.op[1].from,
                     amount : tx.op[1].amount,
                     link : `https://steemit.com/@${USERNAME}/transfers`
@@ -184,7 +185,7 @@ function stopStream(){
               case (enable.votes == true && transaction == 'vote' && tx.op[1].author == USERNAME):
                   sendNotification({
                     nType: 'vote',
-                    icon: './img/vote-icon.png',
+                    icon: path.join(__dirname, '/img/vote-icon.png'),
                     from: tx.op[1].voter,
                     weight :  tx.op[1].weight ? tx.op[1].weight : 10000,
                     link : `https://steemit.com/@${tx.op[1].author }/${tx.op[1].permlink}/`
@@ -193,7 +194,7 @@ function stopStream(){
               case (enable.authorRewards == true && transaction == 'author_reward' && tx.op[1].author == USERNAME ):
                   sendNotification({
                     nType: 'Author Reward',
-                    icon: './img/reward-icon.png',
+                    icon: path.join(__dirname, '/img/reward-icon.png'),
                     sbd:  tx.op[1].sbd_payout,
                     vests: tx.op[1].vesting_payout,
                     steem: tx.op[1].steem_payout,
@@ -203,7 +204,7 @@ function stopStream(){
               case (enable.commentRewards == true && transaction == 'comment_reward' && tx.op[1].author == USERNAME ):
                   sendNotification({
                     nType: 'Comment Reward',
-                    icon: './img/reward-icon.png',
+                    icon: path.join(__dirname, '/img/reward-icon.png'),
                     sbd:  tx.op[1].sbd_payout,
                     vests: tx.op[1].vesting_payout,
                     steem: tx.op[1].steem_payout,
@@ -213,7 +214,7 @@ function stopStream(){
               case (enable.curationRewards == true && transaction == 'curation_reward' && tx.op[1].author == USERNAME ):
                   sendNotification({
                     nType: 'Curation Reward',
-                    icon: './img/reward-icon.png',
+                    icon: path.join(__dirname, '/img/reward-icon.png'),
                     sbd:  tx.op[1].sbd_payout,
                     vests: tx.op[1].vesting_payout,
                     steem: tx.op[1].steem_payout,
@@ -223,7 +224,7 @@ function stopStream(){
               case (enable.mentions == true && transaction == 'mention'):
                   sendNotification({
                     nType: 'mention',
-                    icon: './img/mention-icon.png',
+                    icon: path.join(__dirname, '/img/mention-icon.png'),
                     from: tx.op[1].author,
                     link : `https://steemit.com/@${tx.op[1].author }/${tx.op[1].permlink}/`
                   })
@@ -231,7 +232,7 @@ function stopStream(){
               case (enable.follows == true && transaction == 'follow' && jsonContent.following == USERNAME ):
                   sendNotification({
                     nType: 'follow',
-                    icon: './img/follow-icon.png',
+                    icon: path.join(__dirname, '/img/follow-icon.png'),
                     from: jsonContent.follower,
                     link : `https://steemit.com/@${jsonContent.follower}`
                   })
@@ -239,7 +240,7 @@ function stopStream(){
               case (enable.reblogs == true && transaction == 'reblog' && jsonContent.author == USERNAME ):
                   sendNotification({
                     nType: 'reblog',
-                    icon: './img/reblog-icon.png',
+                    icon: path.join(__dirname, '/img/reblog-icon.png'),
                     from: jsonContent.account,
                     link : `https://steemit.com/@${jsonContent.account}`
                   })
