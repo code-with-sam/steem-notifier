@@ -179,7 +179,7 @@ function stopStream(){
                     icon: path.join(__dirname, '/img/comment-icon.png'),
                     author: tx.op[1].author,
                     body : tx.op[1].body,
-                    link : `https://steemit.com/@${tx.op[1].parent_author }/${tx.op[1].permlink}/`
+                    link : `https://steemit.com/@${tx.op[1].author }/${tx.op[1].permlink}/`
                   })
               break;
               case (enable.transfers == true && transaction == 'transfer' && tx.op[1].to == USERNAME ):
