@@ -212,7 +212,7 @@ function stopStream(){
                     sbd:  tx.op[1].sbd_payout,
                     vests: tx.op[1].vesting_payout,
                     steem: tx.op[1].steem_payout,
-                    link : `https://steemit.com/@${tx.op[1].author }/${tx.op[1].permlink}/`
+                    link : `https://steemit.com/@${tx.op[1].author }/transfers`
                   })
               break;
               case (enable.commentRewards == true && transaction == 'comment_reward' && tx.op[1].author == USERNAME ):
@@ -222,7 +222,7 @@ function stopStream(){
                     sbd:  tx.op[1].sbd_payout,
                     vests: tx.op[1].vesting_payout,
                     steem: tx.op[1].steem_payout,
-                    link : `https://steemit.com/@${tx.op[1].author }/${tx.op[1].permlink}/`
+                    link : `https://steemit.com/@${tx.op[1].author }/transfers`
                   })
               break;
               case (enable.curationRewards == true && transaction == 'curation_reward' && tx.op[1].author == USERNAME ):
@@ -232,7 +232,7 @@ function stopStream(){
                     sbd:  tx.op[1].sbd_payout,
                     vests: tx.op[1].vesting_payout,
                     steem: tx.op[1].steem_payout,
-                    link : `https://steemit.com/@${tx.op[1].author }/${tx.op[1].permlink}/`
+                    link : `https://steemit.com/@${tx.op[1].author }/transfers`
                   })
               break;
               case (enable.mentions == true && transaction == 'mention'):
