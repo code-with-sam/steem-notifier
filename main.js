@@ -10,14 +10,15 @@ const open = require("open");
 let stream,
     dataStoreForSleep,
     votePower,
-    votePowerPolling;
+    votePowerPolling,
+    sender
 
 steem.api.setOptions({ url: 'wss://rpc.buildteam.io' });
 
 
 ipcMain.on('enable-notifications', (event, data) => {
+  sender = event.sender;
   dataStoreForSleep = data;
-  console.log('notifications', data)
 
   getUserInfo(data.username)
     .then(data => event.sender.send('user-data', data))
@@ -42,7 +43,9 @@ ipcMain.on('request-vote-power', (event, data) => {
   event.sender.send('vote-power', votePower)
 })
 
-
+ipcMain.on('open-notification', (event, data) => {
+  open(data.link)
+})
 
 let tray;
 let appView = null;
@@ -288,16 +291,15 @@ function sendNotification(data) {
     break;
     default:
     message = `New notification`
-
   }
 
-  let notification =  new Notification({
+  sender.send('show-notification', {
     title: `New Steem ${data.nType}!`,
     body:  message,
     silent: true,
     icon: data.icon || path.join(__dirname, 'steem-icon@2x.png'),
+    link: data.link
   })
-  notification.show()
 }
 
 

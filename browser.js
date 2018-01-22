@@ -64,17 +64,21 @@ ipcRenderer.on('user-data', (event, data) => {
 
 
 ipcRenderer.on('vote-power', (event, data) => {
-  console.log(data);
-
   if (data){
-
       $('.vote-power').text(data.toFixed(2) + '%')
-
       document.querySelector('.vote-ring').style.strokeDashoffset = 200 - data*2
       document.querySelector('.vote-ring').style.opacity = 1
   }
+})
 
+ipcRenderer.on('show-notification', (event, data) => {
+  let notification = new Notification(data.title , data)
 
+  notification.onclick = () => {
+    if (data.link){
+      ipcRenderer.send('open-notification', data)
+    }
+  }
 
 })
 // FUNCTIIONS
