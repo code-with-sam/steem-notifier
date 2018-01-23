@@ -2,7 +2,7 @@
 
 > Steem Notifier is a minimal taskbar application that send notifications about your [Steem account](http://steemit.com) through your native operating systems notification interface.
 
-![Screen](https://i.imgsafe.org/d2/d24295d019.png)
+![screen](https://user-images.githubusercontent.com/34964560/35290479-48262cd2-0062-11e8-8dc0-588c67a0f32d.png)
 
 ## How To
 Steem Motifer is an electron based app an can run cross platform with windows/osx/linux. ```Version 1.0.0``` is only tested with OSX.
@@ -11,7 +11,16 @@ Steem Motifer is an electron based app an can run cross platform with windows/os
 git clone git@github.com:code-with-sam/steem-notifier.git
 ```
 
-setup/install
+## Build locally
+```
+npm install
+npm run package-mac
+npm run package-win
+npm run package-linux
+```
+find release builds in ```release/``` 
+
+## setup/install for Development 
 ```
 npm install
 npm start
