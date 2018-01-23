@@ -1,10 +1,13 @@
 {
   "name": "steem-notifier",
-  "version": "0.3.1",
-  "description": "A minimal native notifier",
+  "version": "1.0.0",
+  "description": "A minimal native steem notifier",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "package-mac": "electron-packager . --overwrite --asar=true --platform=darwin --arch=x64 --icon=steem-icons.icns --prune=true --out=release-builds",
+    "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32 --icon=steem-icon.ico --prune=true --out=release-builds --version-string.CompanyName='SB' --version-string.FileDescription='Steem Notifier' --version-string.ProductName='Steem Notifier'",
+    "package-linux" : "electron-packager . --overwrite --asar=true --platform=linux --arch=x64 --icon=steem-icon-max.png --prune=true --out=release-builds"
   },
   "repository": "",
   "keywords": [
@@ -13,7 +16,8 @@
   "author": "SamBillingham",
   "license": "MIT",
   "devDependencies": {
-    "electron": "~1.7.8"
+    "electron": "~1.7.8",
+    "electron-packager": "^10.1.1"
   },
   "dependencies": {
     "growly": "^1.3.0",

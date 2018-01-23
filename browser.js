@@ -16,9 +16,21 @@ let notifications = {
 }
 
 
+
 $(document).ready(()=> {
-  $('.intro-pane__inner').removeClass('animation-start')
-  $('.intro-pane__username').focus()
+  let defaultUser = localStorage.getItem('default-username');
+
+  console.log('default user: ', defaultUser)
+
+  if(defaultUser !== 'false'){
+    $('.intro-pane').fadeOut(500)
+    $('.animation-hidden').removeClass('animation-hidden')
+    $('.intro-pane__username').val(defaultUser)
+    updateNotifications(notifications)
+  } else {
+    $('.intro-pane__inner').removeClass('animation-start')
+    $('.intro-pane__username').focus()
+  }
 })
 
 $('.check-box').on('click', (e) => {
@@ -36,6 +48,16 @@ $('.check-box').on('click', (e) => {
   updateNotifications(notifications)
 })
 
+$('.check-box--intro').on('click', (e) => {
+  let currentCheckBox = $(e.currentTarget)
+  let isChecked = currentCheckBox.hasClass('checked--intro');
+  if( isChecked ) {
+    currentCheckBox.removeClass('checked--intro')
+  } else {
+    currentCheckBox.addClass('checked--intro')
+  }
+})
+
 
 $('.intro-pane__username').keypress(function(e) {
     let val = $('.intro-pane__username').val()
@@ -43,6 +65,10 @@ $('.intro-pane__username').keypress(function(e) {
       $('.intro-pane').fadeOut(750)
       $('.animation-hidden').removeClass('animation-hidden')
       updateNotifications(notifications)
+
+      if ( $('.check-box--intro').hasClass('checked--intro')){
+        setDefaultUser(val)
+      }
     }
 });
 
@@ -56,7 +82,7 @@ setInterval(()=> {
 ipcRenderer.on('user-data', (event, data) => {
   console.log(data)
   $('.notifactions__user-name').text(data.name)
-  $('.notifactions__user-bio').text(data.bio)
+  $('.notifactions__user-bio').text(data.bio.substring(0, 35))
   $('.notifactions__user-stats').text(`Following: ${data.followingCount} | Followers: ${data.followerCount} | Posts: ${data.numOfPosts}`)
   $('.notifactions__user-value').text(`Account Value: $${data.usdValue}`)
   $('.notifactions__user-image').attr('src', data.image)
@@ -64,20 +90,33 @@ ipcRenderer.on('user-data', (event, data) => {
 
 
 ipcRenderer.on('vote-power', (event, data) => {
-  console.log(data);
-
   if (data){
-
       $('.vote-power').text(data.toFixed(2) + '%')
-
       document.querySelector('.vote-ring').style.strokeDashoffset = 200 - data*2
       document.querySelector('.vote-ring').style.opacity = 1
   }
+})
 
+ipcRenderer.on('show-notification', (event, data) => {
+  let notification = new Notification(data.title , data)
 
+  notification.onclick = () => {
+    if (data.link){
+      ipcRenderer.send('open-notification', data)
+    }
+  }
 
 })
+
+ipcRenderer.on('clear-default-user', (event, data) => {
+    localStorage.setItem('default-username', 'false');
+    location.reload();
+})
 // FUNCTIIONS
+
+function setDefaultUser(defaultUsername){
+  localStorage.setItem('default-username', defaultUsername);
+}
 
 function updateNotifications(notifications){
   let username = $('.intro-pane__username').val();
