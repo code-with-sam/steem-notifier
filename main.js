@@ -1,5 +1,5 @@
 const electron = require('electron')
-const {app, Menu, Tray, BrowserWindow, Screen, ipcMain, Notification, nativeImage} = electron
+const {app, Menu, Tray, BrowserWindow, Screen, ipcMain, Notification} = electron
 
 const path = require('path')
 const url = require('url')
