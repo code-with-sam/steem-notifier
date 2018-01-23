@@ -22,7 +22,7 @@ $(document).ready(()=> {
 
   console.log('default user: ', defaultUser)
 
-  if(defaultUser !== 'false' && defaultUser === '' ){
+  if(defaultUser !== 'false' && defaultUser !== false){
     $('.intro-pane').fadeOut(500)
     $('.animation-hidden').removeClass('animation-hidden')
     $('.intro-pane__username').val(defaultUser)
