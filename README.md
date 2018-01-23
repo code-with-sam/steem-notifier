@@ -4,6 +4,10 @@
 
 ![screen](https://user-images.githubusercontent.com/34964560/35290479-48262cd2-0062-11e8-8dc0-588c67a0f32d.png)
 
+# V1.0.0 Release
+You can now download [packaged app releases](https://github.com/code-with-sam/steem-notifier/releases)
+
+
 ## How To
 Steem Motifer is an electron based app an can run cross platform with windows/osx/linux. ```Version 1.0.0``` is only tested with OSX.
 
