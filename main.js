@@ -3,7 +3,6 @@ const {app, Menu, Tray, BrowserWindow, Screen, ipcMain, Notification, nativeImag
 
 const path = require('path')
 const url = require('url')
-
 const steem = require('steem');
 const open = require("open");
 
