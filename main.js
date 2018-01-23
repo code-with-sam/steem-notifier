@@ -102,10 +102,13 @@ function createWindow() {
   appView = new BrowserWindow({
     titleBarStyle: 'hidden',
     width: 500,
-    height: 300,
+    height: 310,
     frame: true,
     show: false,
-    resizable: false,
+    minWidth: 500,
+    minHeight: 300,
+    maxWidth: 700,
+    maxHeight: 400,
     x: trayPosition.x - 125,
     y: yPos,
     icon: path.join(__dirname, 'steem-icon.png')
