@@ -66,6 +66,8 @@ function appReady() {
         tray.popUpContextMenu(contextMenu)
     })
 
+    createWindow();
+    
     tray.on('click', () => {
       if (appView === null){
         createWindow();
