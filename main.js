@@ -101,6 +101,7 @@ function createWindow() {
   }
 
   appView = new BrowserWindow({
+    titleBarStyle: 'hidden',
     width: 500,
     height: 300,
     frame: true,
