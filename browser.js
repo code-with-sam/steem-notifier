@@ -22,7 +22,7 @@ $(document).ready(()=> {
 
   console.log('default user: ', defaultUser)
 
-  if(defaultUser !== 'false' && defaultUser === '' ){
+  if(defaultUser !== 'false' && defaultUser !== false){
     $('.intro-pane').fadeOut(500)
     $('.animation-hidden').removeClass('animation-hidden')
     $('.intro-pane__username').val(defaultUser)
@@ -82,7 +82,7 @@ setInterval(()=> {
 ipcRenderer.on('user-data', (event, data) => {
   console.log(data)
   $('.notifactions__user-name').text(data.name)
-  $('.notifactions__user-bio').text(data.bio.substring(0, 35))
+  $('.notifactions__user-bio').text(data.bio)
   $('.notifactions__user-stats').text(`Following: ${data.followingCount} | Followers: ${data.followerCount} | Posts: ${data.numOfPosts}`)
   $('.notifactions__user-value').text(`Account Value: $${data.usdValue}`)
   $('.notifactions__user-image').attr('src', data.image)
