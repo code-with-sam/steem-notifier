@@ -110,7 +110,7 @@ ipcRenderer.on('show-notification', (event, data) => {
 
 ipcRenderer.on('clear-default-user', (event, data) => {
     localStorage.setItem('default-username', 'false');
-    webContents.reload()
+    location.reload();
 })
 // FUNCTIIONS
 
